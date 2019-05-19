@@ -51,8 +51,6 @@ public class UniMoveTest : MonoBehaviour
 		 * to lag. Most of the time, Update() should be called very regularly.
 		 */
 
-        Debug.Log("aqui llego START");
-
         Time.maximumDeltaTime = 0.1f;
 
         int count = UniMoveController.GetNumConnected();
@@ -63,8 +61,6 @@ public class UniMoveTest : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             UniMoveController move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
-
-            Debug.Log("aqui llego unimovetest");
 
             // Remember to initialize!
             if (!move.Init(i))

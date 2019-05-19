@@ -127,14 +127,16 @@ public enum PSMove_Frame
     Frame_SecondHalf, /*!< The most recent frame */
 };
 
-public enum PSMoveTracker_Status {
+public enum PSMoveTracker_Status
+{
     Tracker_NOT_CALIBRATED, /*!< Controller not registered with tracker */
     Tracker_CALIBRATION_ERROR, /*!< Calibration failed (check lighting, visibility) */
     Tracker_CALIBRATED, /*!< Color calibration successful, not currently tracking */
     Tracker_TRACKING, /*!< Calibrated and successfully tracked in the camera */
 };
 
-public enum PSMoveTracker_Exposure {
+public enum PSMoveTracker_Exposure
+{
     Exposure_LOW, /*!< Very low exposure: Good tracking, no environment visible */
     Exposure_MEDIUM, /*!< Middle ground: Good tracking, environment visibile */
     Exposure_HIGH, /*!< High exposure: Fair tracking, but good environment */
@@ -143,16 +145,16 @@ public enum PSMoveTracker_Exposure {
 
 public enum PSMove_LED_Auto_Option
 {
-	PSMove_LED_Auto_On,
-	PSMove_LED_Auto_Off
+    PSMove_LED_Auto_On,
+    PSMove_LED_Auto_Off
 };
 
 public enum PSMove_Connect_Status
 {
-	MoveConnect_OK,
-	MoveConnect_Error,
-	MoveConnect_NoData,
-	MoveConnect_Unknown
+    MoveConnect_OK,
+    MoveConnect_Error,
+    MoveConnect_NoData,
+    MoveConnect_Unknown
 }
 
 public class UniMoveButtonEventArgs : EventArgs
@@ -215,7 +217,6 @@ public class UniMoveController : MonoBehaviour
     /// </summary>
     public bool Init(int index)
     {
-        Debug.Log("aqui llego");
 
         handle = psmove_connect_by_id(index);
 
@@ -223,8 +224,10 @@ public class UniMoveController : MonoBehaviour
         if (handle == IntPtr.Zero) return false;
 
         tracker = psmove_tracker_new();
+        psmove_tracker_set_exposure(tracker, PSMoveTracker_Exposure.Exposure_LOW);		//<F>
         fusion = psmove_fusion_new(tracker, 1.0f, 1000.0f);
         //psmove_tracker_set_mirror(tracker, 1);
+
 
         while (psmove_tracker_enable(tracker, handle) != PSMoveTrackerStatus.Tracker_CALIBRATED) ;
 
@@ -562,6 +565,8 @@ public class UniMoveController : MonoBehaviour
         position.y = py / 10;
         position.z = pz / 10;
 
+        Debug.Log("x = " + position.x + ", y = " + position.y + ", z = " + position.z);
+
         float rw = 0, rx = 0, ry = 0, rz = 0;
         psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
 
@@ -682,60 +687,60 @@ public class UniMoveController : MonoBehaviour
     [DllImport("psmoveapi_tracker")]
     private static extern IntPtr psmove_tracker_new();
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern IntPtr psmove_tracker_new_with_camera(int camera);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_set_auto_update_leds(IntPtr tracker, IntPtr move,
         PSMove_Bool auto_update_leds);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern PSMove_Bool psmove_tracker_get_auto_update_leds(IntPtr tracker, IntPtr move);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_set_dimming(IntPtr tracker, float dimming);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern float psmove_tracker_get_dimming(IntPtr tracker);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_set_exposure(IntPtr tracker, PSMoveTracker_Exposure exposure);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern PSMoveTracker_Exposure psmove_tracker_get_exposure(IntPtr tracker);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_enable_deinterlace(IntPtr tracker, PSMove_Bool enabled);
 
     [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_set_mirror(IntPtr tracker, int enabled);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern PSMove_Bool psmove_tracker_get_mirror(IntPtr tracker);
 
     [DllImport("psmoveapi_tracker")]
     private static extern PSMoveTrackerStatus psmove_tracker_enable(IntPtr tracker, IntPtr move);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern PSMoveTracker_Status
     psmove_tracker_enable_with_color(IntPtr tracker, IntPtr move, byte r, byte g, byte b);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_disable(IntPtr tracker, IntPtr move);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern int psmove_tracker_get_color(IntPtr tracker, IntPtr move,
         ref byte r, ref byte g, ref byte b);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern int psmove_tracker_get_camera_color(IntPtr tracker, IntPtr move,
     ref byte r, ref byte g, ref byte b);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern int psmove_tracker_set_camera_color(IntPtr tracker, IntPtr move,
         byte r, byte g, byte b);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern PSMoveTracker_Status psmove_tracker_get_status(IntPtr tracker, IntPtr move);
 
     [DllImport("psmoveapi_tracker")]
@@ -747,25 +752,25 @@ public class UniMoveController : MonoBehaviour
     [DllImport("psmoveapi_tracker")]
     private static extern int psmove_tracker_update(IntPtr tracker, IntPtr move);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_annotate(IntPtr tracker);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern IntPtr psmove_tracker_get_frame(IntPtr tracker);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern int psmove_tracker_get_position(IntPtr tracker,
         IntPtr move, ref float x, ref float y, ref float radius);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_get_size(IntPtr tracker,
     ref int width, ref int height);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern float psmove_tracker_distance_from_radius(IntPtr tracker,
         float radius);
 
-    [DllImport("libpsmoveapi_tracker")]
+    [DllImport("psmoveapi_tracker")]
     private static extern void psmove_tracker_set_distance_parameters(IntPtr tracker,
     float height, float center, float hwhm, float shape);
 
