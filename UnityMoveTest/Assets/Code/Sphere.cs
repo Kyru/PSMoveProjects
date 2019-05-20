@@ -1,4 +1,4 @@
-/**
+﻿/**
  * UniMove API - A Unity plugin for the PlayStation Move motion controller
  * Copyright (C) 2012, 2013, Copenhagen Game Collective (http://www.cphgc.org)
  * 					         Patrick Jarnfelt
@@ -34,10 +34,11 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 
-public class UniMoveTest : MonoBehaviour
+public class Sphere : MonoBehaviour
 {
     // We save a list of Move controllers.
-    List<UniMoveController> moves = new List<UniMoveController>();
+    UniMoveController move;
+    bool canMove;
 
     void Start()
     {
@@ -57,84 +58,61 @@ public class UniMoveTest : MonoBehaviour
 
         Debug.Log("count = " + count);
 
-        // Iterate through all connections (USB and Bluetooth)
-        for (int i = 0; i < count; i++)
+        move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
+
+        // Remember to initialize!
+        if (!move.Init(0))  // <F> 0 es el primer y único mando
         {
-            UniMoveController move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
-
-            // Remember to initialize!
-            if (!move.Init(i))
-            {
-                Destroy(move);  // If it failed to initialize, destroy and continue on
-                continue;
-            }
-
-            // This example program only uses Bluetooth-connected controllers
-            PSMoveConnectionType conn = move.ConnectionType;
-            if (conn == PSMoveConnectionType.Unknown || conn == PSMoveConnectionType.USB)
-            {
-                Destroy(move);
-            }
-            else
-            {
-                moves.Add(move);
-
-                // Start all controllers with a white LED
-                move.SetLED(Color.magenta);
-
-                transform.localRotation = move.Orientation;
-                transform.localPosition = move.Position;
-
-            }
+            Destroy(move);  // If it failed to initialize, destroy and continue on
         }
+
+        // This example program only uses Bluetooth-connected controllers
+        PSMoveConnectionType conn = move.ConnectionType;
+        if (conn == PSMoveConnectionType.Unknown || conn == PSMoveConnectionType.USB)
+        {
+            Destroy(move);
+        }
+        else
+        {
+            // Start all controllers with a white LED
+            move.SetLED(Color.magenta);
+
+            transform.localRotation = move.Orientation;
+            transform.localPosition = move.Position;
+        }
+
+        Debug.Log(gameObject.tag);
     }
 
     void Update()
     {
-
-        foreach (UniMoveController move in moves)
+        if (move.GetButtonDown(PSMoveButton.Circle))
         {
-            // Instead of this somewhat kludge-y check, we'd probably want to remove/destroy
-            // the now-defunct controller in the disconnected event handler below.
-            if (move.Disconnected) continue;
-
-            // Button events. Works like Unity's Input.GetButton
-            if (move.GetButtonDown(PSMoveButton.Circle))
-            {
-                Debug.Log("Circle Down");
-            }
-            if (move.GetButtonUp(PSMoveButton.Circle))
-            {
-                Debug.Log("Circle UP");
-            }
-
-            // Change the colors of the LEDs based on which button has just been pressed:
-            if (move.GetButtonDown(PSMoveButton.Circle)) move.SetLED(Color.cyan);
-            else if (move.GetButtonDown(PSMoveButton.Cross)) move.SetLED(Color.red);
-            else if (move.GetButtonDown(PSMoveButton.Square)) move.SetLED(Color.yellow);
-            else if (move.GetButtonDown(PSMoveButton.Triangle)) move.SetLED(Color.magenta);
-            else if (move.GetButtonDown(PSMoveButton.Move))
-            {
-                move.SetLED(Color.black);
-            }
-
+            Debug.Log("Circle click");
+            canMove = !canMove;
+        }
+        if (canMove)
+        {
             transform.localRotation = move.Orientation;
             transform.localPosition = move.Position;
-
-            // Set the rumble based on how much the trigger is down
-            move.SetRumble(move.Trigger);
         }
     }
 
     void OnTriggerEnter(Collider other)
     {
-        foreach (UniMoveController move in moves)
+        if (other.gameObject.tag == "CollisionCube")
         {
-            if (other.gameObject.tag == "CollisionCube")
-            {
-                Debug.Log("OnTriggerEnter happens");
-                move.SetRumble(1f);
-            }
+            Debug.Log("OnTriggerEnter happens");
+            move.SetRumble(1f);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "CollisionCube")
+        {
+            Debug.Log("OnTriggerExit happens");
+            move.SetRumble(0f);
         }
     }
 }

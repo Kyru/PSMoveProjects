@@ -561,11 +561,11 @@ public class UniMoveController : MonoBehaviour
         float px = 0, py = 0, pz = 0;
         psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
 
-        position.x = -px / 10;
-        position.y = py / 10;
-        position.z = pz / 10;
+        position.x = px * 5;
+        position.y = -py * 5;
+        position.z =(-pz * 5) + 20;
 
-        Debug.Log("x = " + position.x + ", y = " + position.y + ", z = " + position.z);
+        //Debug.Log("x = " + position.x + ", y = " + position.y + ", z = " + position.z);
 
         float rw = 0, rx = 0, ry = 0, rz = 0;
         psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
