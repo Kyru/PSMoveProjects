@@ -33,10 +33,12 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using System.Collections;
 
 public class Lightsaber : MonoBehaviour
 {
     [SerializeField] Animator animator;
+    [SerializeField] TrailRenderer trailRenderer;
     UniMoveController move;
     bool canMove;
     bool lightsaberOn;
@@ -85,6 +87,7 @@ public class Lightsaber : MonoBehaviour
 
         lightsaberOn = false;
         animator.SetBool("On", lightsaberOn);
+        trailRenderer.emitting = lightsaberOn;
 
     }
 
@@ -100,11 +103,19 @@ public class Lightsaber : MonoBehaviour
         {
             lightsaberOn = !lightsaberOn;
             animator.SetBool("On", lightsaberOn);
+            trailRenderer.emitting = lightsaberOn;
+            StartCoroutine("ActivateRumble");
         }
         if (canMove)
         {
             transform.localRotation = move.Orientation;
             transform.localPosition = move.Position;
         }
+    }
+
+    IEnumerator ActivateRumble(){
+        move.SetRumble(1f);
+        yield return new WaitForSeconds(0.6f);
+        move.SetRumble(0f);
     }
 }
