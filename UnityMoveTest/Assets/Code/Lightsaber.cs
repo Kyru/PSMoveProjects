@@ -80,6 +80,7 @@ public class Lightsaber : MonoBehaviour
         {
             // Start all controllers with a white LED
             move.SetLED(Color.magenta);
+            move.ResetOrientation();
 
             transform.localRotation = move.Orientation;
             transform.localPosition = move.Position;
@@ -106,6 +107,11 @@ public class Lightsaber : MonoBehaviour
             trailRenderer.emitting = lightsaberOn;
             StartCoroutine("ActivateRumble");
         }
+
+        if(move.GetButtonDown(PSMoveButton.Triangle)){
+            move.ResetOrientation();
+        }
+        
         if (canMove)
         {
             transform.localRotation = move.Orientation;

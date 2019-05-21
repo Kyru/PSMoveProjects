@@ -399,6 +399,11 @@ public class UniMoveController : MonoBehaviour
         psmove_set_leds(handle, (char)(color.r * 255), (char)(color.g * 255), (char)(color.b * 255));
     }
 
+    public void ResetOrientation()
+    {
+        psmove_reset_orientation(handle);
+    }
+
     /// <summary>
     /// Sets the LED color
     /// </summary>
@@ -563,7 +568,7 @@ public class UniMoveController : MonoBehaviour
 
         position.x = px * 5;
         position.y = -py * 5;
-        position.z =(-pz * 5) + 20;
+        position.z = (-pz * 5);
 
         //Debug.Log("x = " + position.x + ", y = " + position.y + ", z = " + position.z);
 
@@ -572,8 +577,8 @@ public class UniMoveController : MonoBehaviour
 
         orientation.w = rw;
         orientation.x = ry;
-        orientation.y = -rz;
-        orientation.z = -rx;
+        orientation.y = rz;
+        orientation.z = rx;
     }
     #endregion
 
