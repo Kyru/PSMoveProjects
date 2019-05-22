@@ -198,9 +198,6 @@ public class UniMoveController : MonoBehaviour
     private Quaternion orientation = Quaternion.identity;
     private Vector3 position = Vector3.zero;
 
-    //<F> UniMoveXController
-    private Quaternion m_orientation = Quaternion.identity; 
-    private Quaternion m_orientationFix = Quaternion.identity;
 
     // TODO: These values still need to be implemented, so we don't expose them publicly
     private PSMove_Battery_Level battery = PSMove_Battery_Level.Batt_20Percent;
