@@ -111,7 +111,7 @@ public class Lightsaber : MonoBehaviour
         if(move.GetButtonDown(PSMoveButton.Triangle)){
             move.ResetOrientation();
         }
-        
+
         if (canMove)
         {
             transform.localRotation = move.Orientation;

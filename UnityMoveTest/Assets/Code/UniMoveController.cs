@@ -198,6 +198,10 @@ public class UniMoveController : MonoBehaviour
     private Quaternion orientation = Quaternion.identity;
     private Vector3 position = Vector3.zero;
 
+    //<F> UniMoveXController
+    private Quaternion m_orientation = Quaternion.identity; 
+    private Quaternion m_orientationFix = Quaternion.identity;
+
     // TODO: These values still need to be implemented, so we don't expose them publicly
     private PSMove_Battery_Level battery = PSMove_Battery_Level.Batt_20Percent;
     private float temperature = 0f;
@@ -460,7 +464,7 @@ public class UniMoveController : MonoBehaviour
     /// </summary>
     public Quaternion Orientation
     {
-        get { return orientation; }
+        get { return orientation; } 
     }
     /// <summary>
     /// The raw values of the 3-axis gyroscope. 
@@ -576,10 +580,12 @@ public class UniMoveController : MonoBehaviour
         psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
 
         orientation.w = rw;
-        orientation.x = ry;
-        orientation.y = rz;
-        orientation.z = rx;
+        orientation.x = rx;
+        orientation.y = ry;
+        orientation.z = rz;
+        
     }
+        
     #endregion
 
 

@@ -94,7 +94,7 @@ public class Sphere : MonoBehaviour
         if (canMove)
         {
             transform.localRotation = move.Orientation;
-            transform.localPosition = move.Position;
+            //transform.localPosition = move.Position;
         }
     }
 
