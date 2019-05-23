@@ -252,7 +252,6 @@ public class UniMoveController : MonoBehaviour
     /// </summary>
     public static int GetNumConnected()
     {
-        Debug.Log("llego al método getnumconnected");
         return psmove_count_connected();
     }
 
@@ -398,6 +397,8 @@ public class UniMoveController : MonoBehaviour
         if (disconnected) return;
 
         psmove_set_leds(handle, (char)(color.r * 255), (char)(color.g * 255), (char)(color.b * 255));
+        // <F> Según la API hay que llamar a este método después de hacer psmove_set_leds
+        psmove_update_leds(handle);
     }
 
     public void ResetOrientation()

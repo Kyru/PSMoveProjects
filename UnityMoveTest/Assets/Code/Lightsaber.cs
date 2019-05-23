@@ -143,9 +143,9 @@ public class Lightsaber : MonoBehaviour
         {
             move.ResetOrientation();
         }
+
         if (move.GetButtonDown(PSMoveButton.Start))
         {
-            Debug.Log("Circle click");
             canMove = !canMove;
         }
 
