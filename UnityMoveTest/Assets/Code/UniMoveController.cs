@@ -461,7 +461,7 @@ public class UniMoveController : MonoBehaviour
     /// </summary>
     public Quaternion Orientation
     {
-        get { return orientation; } 
+        get { return orientation; }
     }
     /// <summary>
     /// The raw values of the 3-axis gyroscope. 
@@ -565,13 +565,13 @@ public class UniMoveController : MonoBehaviour
         temperature = psmove_get_temperature(handle);
 
         float px = 0, py = 0, pz = 0;
+
+        /* <F> Estos valores se utilizan cuando se quiere ver el mando desde frente
         psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
 
         position.x = px * 5;
         position.y = -py * 5;
         position.z = (-pz * 5);
-
-        //Debug.Log("x = " + position.x + ", y = " + position.y + ", z = " + position.z);
 
         float rw = 0, rx = 0, ry = 0, rz = 0;
         psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
@@ -580,9 +580,23 @@ public class UniMoveController : MonoBehaviour
         orientation.x = rx;
         orientation.y = ry;
         orientation.z = rz;
-        
+        */
+        //<F> Estos valores se utilizan si se quiere ver el mando desde atrás
+        psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
+
+        position.x = -px * 5;
+        position.y = -py * 5;
+        position.z = -pz * 5;
+
+        float rw = 0, rx = 0, ry = 0, rz = 0;
+        psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
+
+        orientation.w = rw;
+        orientation.x = rx;
+        orientation.y = -ry;
+        orientation.z = -rz;
     }
-        
+
     #endregion
 
 
