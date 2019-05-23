@@ -39,6 +39,14 @@ public class Lightsaber : MonoBehaviour
 {
     [SerializeField] Animator animator;
     [SerializeField] TrailRenderer trailRenderer;
+    [SerializeField] GameObject trailGood;
+    [SerializeField] GameObject lightsaberEdge;
+    [SerializeField] Material lightsaberBlue;
+    [SerializeField] Material lightsaberRed;
+    [SerializeField] Material lightsaberGreen;
+    [SerializeField] Material lightsaberPurple;
+    private Renderer trailGoodRenderer;
+    private Renderer edgeRenderer;
     UniMoveController move;
     bool canMove;
     bool lightsaberOn;
@@ -89,27 +97,55 @@ public class Lightsaber : MonoBehaviour
         lightsaberOn = false;
         animator.SetBool("On", lightsaberOn);
         trailRenderer.emitting = lightsaberOn;
+        trailGood.SetActive(lightsaberOn);
 
+        trailGoodRenderer = trailGood.GetComponent<Renderer>();
+        edgeRenderer = lightsaberEdge.GetComponent<Renderer>();
+        trailGoodRenderer.material = lightsaberBlue;
+        edgeRenderer.material = lightsaberBlue;
     }
 
     void Update()
     {
-        if (move.GetButtonDown(PSMoveButton.Circle))
-        {
-            Debug.Log("Circle click");
-            canMove = !canMove;
-        }
+
 
         if (move.GetButtonDown(PSMoveButton.Move))
         {
             lightsaberOn = !lightsaberOn;
             animator.SetBool("On", lightsaberOn);
             trailRenderer.emitting = lightsaberOn;
+            trailGood.SetActive(lightsaberOn);
             StartCoroutine("ActivateRumble");
         }
+        if (move.GetButtonDown(PSMoveButton.Square))
+        {
+            trailGoodRenderer.material = lightsaberPurple;
+            edgeRenderer.material = lightsaberPurple;
+        }
+        if (move.GetButtonDown(PSMoveButton.Triangle))
+        {
+            trailGoodRenderer.material = lightsaberGreen;
+            edgeRenderer.material = lightsaberGreen;
+        }
+        if (move.GetButtonDown(PSMoveButton.Circle))
+        {
+            trailGoodRenderer.material = lightsaberRed;
+            edgeRenderer.material = lightsaberRed;
+        }
+        if (move.GetButtonDown(PSMoveButton.Cross))
+        {
+            trailGoodRenderer.material = lightsaberBlue;
+            edgeRenderer.material = lightsaberBlue;
+        }
 
-        if(move.GetButtonDown(PSMoveButton.Triangle)){
+        if (move.GetButtonDown(PSMoveButton.Select))
+        {
             move.ResetOrientation();
+        }
+        if (move.GetButtonDown(PSMoveButton.Start))
+        {
+            Debug.Log("Circle click");
+            canMove = !canMove;
         }
 
         if (canMove)
@@ -119,7 +155,8 @@ public class Lightsaber : MonoBehaviour
         }
     }
 
-    IEnumerator ActivateRumble(){
+    IEnumerator ActivateRumble()
+    {
         move.SetRumble(1f);
         yield return new WaitForSeconds(0.6f);
         move.SetRumble(0f);
