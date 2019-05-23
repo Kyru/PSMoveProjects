@@ -115,6 +115,7 @@ public class Lightsaber : MonoBehaviour
             animator.SetBool("On", lightsaberOn);
             trailRenderer.emitting = lightsaberOn;
             trailGood.SetActive(lightsaberOn);
+            lightsaberEdge.SetActive(lightsaberOn);
             StartCoroutine("ActivateRumble");
         }
         if (move.GetButtonDown(PSMoveButton.Square))
