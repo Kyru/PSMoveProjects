@@ -16,4 +16,10 @@ public class LightCube : MonoBehaviour
     {
         transform.Translate(Vector3.forward * speed);
     }
+
+    void OnTriggerEnter(Collider other){
+        if(other.gameObject.tag == "CubeDestroyer"){
+            Destroy(this.gameObject);
+        }
+    }
 }
