@@ -50,6 +50,7 @@ public class Lightsaber : MonoBehaviour
     UniMoveController move;
     bool canMove;
     bool lightsaberOn;
+    bool gameOver;
 
 
     void Start()
@@ -103,56 +104,61 @@ public class Lightsaber : MonoBehaviour
         edgeRenderer = lightsaberEdge.GetComponent<Renderer>();
         trailGoodRenderer.material = lightsaberBlue;
         edgeRenderer.material = lightsaberBlue;
+
+        Messenger.AddListener(GameEvent.GAME_OVER, endGame);
+        gameOver = false;
     }
 
     void Update()
     {
 
+        if (!gameOver)
+        {
+            if (move.GetButtonDown(PSMoveButton.Move))
+            {
+                lightsaberOn = !lightsaberOn;
+                animator.SetBool("On", lightsaberOn);
+                trailRenderer.emitting = lightsaberOn;
+                trailGood.SetActive(lightsaberOn);
+                lightsaberEdge.SetActive(lightsaberOn);
+                StartCoroutine("ActivateRumble");
+            }
+            if (move.GetButtonDown(PSMoveButton.Square))
+            {
+                trailGoodRenderer.material = lightsaberPurple;
+                edgeRenderer.material = lightsaberPurple;
+            }
+            if (move.GetButtonDown(PSMoveButton.Triangle))
+            {
+                trailGoodRenderer.material = lightsaberGreen;
+                edgeRenderer.material = lightsaberGreen;
+            }
+            if (move.GetButtonDown(PSMoveButton.Circle))
+            {
+                trailGoodRenderer.material = lightsaberRed;
+                edgeRenderer.material = lightsaberRed;
+            }
+            if (move.GetButtonDown(PSMoveButton.Cross))
+            {
+                trailGoodRenderer.material = lightsaberBlue;
+                edgeRenderer.material = lightsaberBlue;
+            }
 
-        if (move.GetButtonDown(PSMoveButton.Move))
-        {
-            lightsaberOn = !lightsaberOn;
-            animator.SetBool("On", lightsaberOn);
-            trailRenderer.emitting = lightsaberOn;
-            trailGood.SetActive(lightsaberOn);
-            lightsaberEdge.SetActive(lightsaberOn);
-            StartCoroutine("ActivateRumble");
-        }
-        if (move.GetButtonDown(PSMoveButton.Square))
-        {
-            trailGoodRenderer.material = lightsaberPurple;
-            edgeRenderer.material = lightsaberPurple;
-        }
-        if (move.GetButtonDown(PSMoveButton.Triangle))
-        {
-            trailGoodRenderer.material = lightsaberGreen;
-            edgeRenderer.material = lightsaberGreen;
-        }
-        if (move.GetButtonDown(PSMoveButton.Circle))
-        {
-            trailGoodRenderer.material = lightsaberRed;
-            edgeRenderer.material = lightsaberRed;
-        }
-        if (move.GetButtonDown(PSMoveButton.Cross))
-        {
-            trailGoodRenderer.material = lightsaberBlue;
-            edgeRenderer.material = lightsaberBlue;
-        }
+            if (move.GetButtonDown(PSMoveButton.Select))
+            {
+                move.ResetOrientation();
+            }
 
-        if (move.GetButtonDown(PSMoveButton.Select))
-        {
-            move.ResetOrientation();
-        }
+            if (move.GetButtonDown(PSMoveButton.Start))
+            {
+                canMove = !canMove;
+            }
 
-        if (move.GetButtonDown(PSMoveButton.Start))
-        {
-            canMove = !canMove;
-        }
-
-        if (canMove)
-        {
-            transform.localRotation = move.Orientation;
-            transform.localPosition = move.Position;
+            if (canMove)
+            {
+                transform.localRotation = move.Orientation;
+                transform.localPosition = move.Position;
+            }
         }
     }
 
@@ -161,5 +167,15 @@ public class Lightsaber : MonoBehaviour
         move.SetRumble(1f);
         yield return new WaitForSeconds(0.6f);
         move.SetRumble(0f);
+    }
+
+    void endGame()
+    {
+        gameOver = true;
+    }
+
+    void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.GAME_OVER, endGame);
     }
 }

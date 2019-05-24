@@ -40,6 +40,7 @@ public class UIController : MonoBehaviour
     void endGame(){
         gameOver.SetActive(true);
         Time.timeScale = 0f;
+        Messenger.Broadcast(GameEvent.GAME_OVER);
     }
     
     void OnDestroy() {
