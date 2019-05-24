@@ -45,6 +45,7 @@ public class Lightsaber : MonoBehaviour
     [SerializeField] Material lightsaberRed;
     [SerializeField] Material lightsaberGreen;
     [SerializeField] Material lightsaberPurple;
+    public AudioControl audioControl;
     private Renderer trailGoodRenderer;
     private Renderer edgeRenderer;
     UniMoveController move;
@@ -116,11 +117,14 @@ public class Lightsaber : MonoBehaviour
         {
             if (move.GetButtonDown(PSMoveButton.Move))
             {
+                audioControl.GetComponent<AudioControl>().ActivateAudioClip();
+
                 lightsaberOn = !lightsaberOn;
                 animator.SetBool("On", lightsaberOn);
                 trailRenderer.emitting = lightsaberOn;
                 trailGood.SetActive(lightsaberOn);
                 lightsaberEdge.SetActive(lightsaberOn);
+
                 StartCoroutine("ActivateRumble");
             }
             if (move.GetButtonDown(PSMoveButton.Square))
@@ -152,6 +156,10 @@ public class Lightsaber : MonoBehaviour
             if (move.GetButtonDown(PSMoveButton.Start))
             {
                 canMove = !canMove;
+            }
+
+            if(lightsaberOn){
+                audioControl.GetComponent<AudioControl>().LoopAudioClip();
             }
 
             if (canMove)
