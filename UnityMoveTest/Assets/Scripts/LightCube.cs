@@ -19,6 +19,7 @@ public class LightCube : MonoBehaviour
 
     void OnTriggerEnter(Collider other){
         if(other.gameObject.tag == "CubeDestroyer"){
+            Messenger.Broadcast(GameEvent.MINUS_LIFE);
             Destroy(this.gameObject);
         }
     }
