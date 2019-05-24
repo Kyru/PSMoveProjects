@@ -52,6 +52,7 @@ public class Lightsaber : MonoBehaviour
     bool canMove;
     bool lightsaberOn;
     bool gameOver;
+    bool loopClipPlaying;
 
 
     void Start()
@@ -108,6 +109,7 @@ public class Lightsaber : MonoBehaviour
 
         Messenger.AddListener(GameEvent.GAME_OVER, endGame);
         gameOver = false;
+        loopClipPlaying = false;
     }
 
     void Update()
@@ -119,12 +121,12 @@ public class Lightsaber : MonoBehaviour
             {
                 audioControl.GetComponent<AudioControl>().ActivateAudioClip();
 
-                lightsaberOn = !lightsaberOn;
+                lightsaberOn = !lightsaberOn;               
                 animator.SetBool("On", lightsaberOn);
                 trailRenderer.emitting = lightsaberOn;
                 trailGood.SetActive(lightsaberOn);
                 lightsaberEdge.SetActive(lightsaberOn);
-
+            
                 StartCoroutine("ActivateRumble");
             }
             if (move.GetButtonDown(PSMoveButton.Square))
@@ -158,14 +160,21 @@ public class Lightsaber : MonoBehaviour
                 canMove = !canMove;
             }
 
-            if(lightsaberOn){
+            if(lightsaberOn && !loopClipPlaying){
                 audioControl.GetComponent<AudioControl>().LoopAudioClip();
+                loopClipPlaying = true;
+            }
+
+            if(!lightsaberOn && loopClipPlaying){
+                audioControl.GetComponent<AudioControl>().LoopAudioClipStop();
+                loopClipPlaying = false;
             }
 
             if (canMove)
             {
                 transform.localRotation = move.Orientation;
                 transform.localPosition = move.Position;
+                //audioControl.GetComponent<AudioControl>().SwingAudioClip();
             }
         }
     }

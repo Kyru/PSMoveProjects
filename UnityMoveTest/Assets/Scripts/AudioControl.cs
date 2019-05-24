@@ -44,12 +44,17 @@ public class AudioControl : MonoBehaviour
         loopAudioSource.clip = loopClip;
         loopAudioSource.Play();
     }
-
-    void endGame(){
+    
+    public void LoopAudioClipStop(){
+        loopAudioSource.Stop();
+    }
+    void endGame()
+    {
 
     }
 
-    void OnDestroy(){
+    void OnDestroy()
+    {
         Messenger.RemoveListener(GameEvent.GAME_OVER, endGame);
     }
 }
