@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
 {
     [SerializeField] Text scoreText;
     [SerializeField] Text lifesText;
+    [SerializeField] GameObject gameOver;
 
     public int scoreVariable;
     public int lifeVariable;
@@ -20,7 +21,8 @@ public class UIController : MonoBehaviour
         Messenger.AddListener(GameEvent.MINUS_LIFE, minusLife);
 
         lifesText.text = "Lifes: " + life;
-        scoreText.text = "Score: " + score; 
+        scoreText.text = "Score: " + score;
+        gameOver.SetActive(false);
     }
 
     public void addScore(){
@@ -32,6 +34,12 @@ public class UIController : MonoBehaviour
         life = life - lifeVariable;
         if(life < 0) life = 0;
         lifesText.text = "Lifes: " + life;
+        if(life == 0) endGame();
+    }
+
+    void endGame(){
+        gameOver.SetActive(true);
+        Time.timeScale = 0f;
     }
     
     void OnDestroy() {

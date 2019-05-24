@@ -14,7 +14,7 @@ public class LightCube : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.forward * speed);
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
 
     void OnTriggerEnter(Collider other){
