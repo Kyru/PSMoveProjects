@@ -108,6 +108,7 @@ public class Lightsaber : MonoBehaviour
         edgeRenderer.material = lightsaberBlue;
 
         Messenger.AddListener(GameEvent.GAME_OVER, endGame);
+        Messenger.AddListener(GameEvent.ADD_SCORE, cubeDestroyed);
         gameOver = false;
         loopClipPlaying = false;
     }
@@ -205,6 +206,11 @@ public class Lightsaber : MonoBehaviour
         move.SetRumble(0f);
     }
 
+    void cubeDestroyed(){
+        move.SetRumble(1f);
+        Invoke("DeactivateRumble", 0.8f);
+    }
+
     void endGame()
     {
         gameOver = true;
@@ -213,5 +219,6 @@ public class Lightsaber : MonoBehaviour
     void OnDestroy()
     {
         Messenger.RemoveListener(GameEvent.GAME_OVER, endGame);
+        Messenger.RemoveListener(GameEvent.ADD_SCORE, cubeDestroyed);
     }
 }
