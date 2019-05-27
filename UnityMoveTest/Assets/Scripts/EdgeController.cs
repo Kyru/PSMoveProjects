@@ -11,8 +11,6 @@ public class EdgeController : MonoBehaviour
             string materialEdge = GetComponent<Renderer>().material.name;
             string materialCube = other.GetComponent<Renderer>().material.name;
 
-            Debug.Log("materialedge = " + materialEdge + ", materialCube = " + materialCube);
-
             if (materialEdge == "Lightsaber Blue (Instance)" && materialCube == "CubeBlue (Instance)")
             {
                 Messenger.Broadcast(GameEvent.ADD_SCORE);

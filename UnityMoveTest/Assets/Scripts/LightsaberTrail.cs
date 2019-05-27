@@ -68,6 +68,8 @@ public class LightsaberTrail : MonoBehaviour {
     public float desiredTime = 2.0f;
     public Color startColor = Color.white;
     public Color endColor = new Color(1, 1, 1, 0);
+    //<F> Añadido para que el trail tenga collider y pueda destruir los bloques también
+    public MeshCollider meshCollider;
     #endregion
     //
 
@@ -213,6 +215,10 @@ public class LightsaberTrail : MonoBehaviour {
         mesh.colors = colors;
         mesh.uv = uv;
         mesh.triangles = triangles;
+
+        //<F> Assign new mesh to the meshCollider
+        meshCollider.sharedMesh = mesh;
+
         //
         // Tween to the desired time
         //
