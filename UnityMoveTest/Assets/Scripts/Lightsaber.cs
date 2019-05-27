@@ -121,13 +121,14 @@ public class Lightsaber : MonoBehaviour
             {
                 audioControl.GetComponent<AudioControl>().ActivateAudioClip();
 
-                lightsaberOn = !lightsaberOn;               
+                lightsaberOn = !lightsaberOn;
                 animator.SetBool("On", lightsaberOn);
-                trailRenderer.emitting = lightsaberOn;
-                trailGood.SetActive(lightsaberOn);
-                lightsaberEdge.SetActive(lightsaberOn);
-            
-                StartCoroutine("ActivateRumble");
+                //trailRenderer.emitting = lightsaberOn;
+                //trailGood.SetActive(lightsaberOn);
+                //lightsaberEdge.SetActive(lightsaberOn);
+                //Invoke("delayLightsaberEdge", 1f);
+
+                //StartCoroutine("ActivateRumble");
             }
             if (move.GetButtonDown(PSMoveButton.Square))
             {
@@ -160,12 +161,14 @@ public class Lightsaber : MonoBehaviour
                 canMove = !canMove;
             }
 
-            if(lightsaberOn && !loopClipPlaying){
+            if (lightsaberOn && !loopClipPlaying)
+            {
                 audioControl.GetComponent<AudioControl>().LoopAudioClip();
                 loopClipPlaying = true;
             }
 
-            if(!lightsaberOn && loopClipPlaying){
+            if (!lightsaberOn && loopClipPlaying)
+            {
                 audioControl.GetComponent<AudioControl>().LoopAudioClipStop();
                 loopClipPlaying = false;
             }
@@ -179,10 +182,26 @@ public class Lightsaber : MonoBehaviour
         }
     }
 
-    IEnumerator ActivateRumble()
+    void ActivateLightSaber()
+    {
+        lightsaberEdge.SetActive(lightsaberOn);
+        trailGood.SetActive(lightsaberOn);
+        move.SetRumble(0f);
+    }
+
+    void ActivateRumble()
     {
         move.SetRumble(1f);
-        yield return new WaitForSeconds(0.6f);
+    }
+
+    void DeactivateLightSaber()
+    {
+        move.SetRumble(1f);
+        trailGood.SetActive(lightsaberOn);
+    }
+
+    void DeactivateRumble()
+    {
         move.SetRumble(0f);
     }
 
