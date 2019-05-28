@@ -14,22 +14,26 @@ public class EdgeController : MonoBehaviour
             if (materialEdge == "Lightsaber Blue (Instance)" && materialCube == "CubeBlue (Instance)")
             {
                 Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                //Destroy(other.gameObject);
             }
             else if (materialEdge == "Lightsaber Green (Instance)" && materialCube == "CubeGreen (Instance)")
             {
                 Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                //Destroy(other.gameObject);
             }
             else if (materialEdge == "Lightsaber Red (Instance)" && materialCube == "CubeRed (Instance)")
             {
                 Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                //Destroy(other.gameObject);
             }
             else if (materialEdge == "Lightsaber Purple (Instance)" && materialCube == "CubePurple (Instance)")
             {
                 Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                //Destroy(other.gameObject);
             }
         }
     }

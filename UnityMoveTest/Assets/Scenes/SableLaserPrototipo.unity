@@ -354,6 +354,21 @@ PrefabInstance:
       propertyPath: speed
       value: 150
       objectReference: {fileID: 0}
+    - target: {fileID: 660837381681062845, guid: de9c77fb5845d904d9aa25f23c8abbed,
+        type: 3}
+      propertyPath: explosionForce
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 660837381681062845, guid: de9c77fb5845d904d9aa25f23c8abbed,
+        type: 3}
+      propertyPath: explosionRadius
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 660837381681062845, guid: de9c77fb5845d904d9aa25f23c8abbed,
+        type: 3}
+      propertyPath: explosionUpward
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de9c77fb5845d904d9aa25f23c8abbed, type: 3}
 --- !u!4 &203240925 stripped
