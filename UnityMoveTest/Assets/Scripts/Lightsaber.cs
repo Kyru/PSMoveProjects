@@ -53,6 +53,7 @@ public class Lightsaber : MonoBehaviour
     bool lightsaberOn;
     bool gameOver;
     bool loopClipPlaying;
+    bool startGame;
 
 
     void Start()
@@ -111,6 +112,7 @@ public class Lightsaber : MonoBehaviour
         Messenger.AddListener(GameEvent.ADD_SCORE, cubeDestroyed);
         gameOver = false;
         loopClipPlaying = false;
+        startGame = true;
     }
 
     void Update()
@@ -121,6 +123,11 @@ public class Lightsaber : MonoBehaviour
             if (move.GetButtonDown(PSMoveButton.Move))
             {
                 audioControl.GetComponent<AudioControl>().ActivateAudioClip();
+
+                if(startGame){
+                    Messenger.Broadcast(GameEvent.START_GAME);
+                    startGame = false;
+                }
 
                 lightsaberOn = !lightsaberOn;
                 animator.SetBool("On", lightsaberOn);

@@ -64,6 +64,8 @@ public class LightCube : MonoBehaviour
             }
         }
 
+        Destroy(gameObject);
+
     }
 
     void createCube(int x, int y, int z)
