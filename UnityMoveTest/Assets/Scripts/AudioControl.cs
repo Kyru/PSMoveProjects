@@ -50,7 +50,7 @@ public class AudioControl : MonoBehaviour
     }
     void endGame()
     {
-
+        gameObject.SetActive(false);
     }
 
     void OnDestroy()
