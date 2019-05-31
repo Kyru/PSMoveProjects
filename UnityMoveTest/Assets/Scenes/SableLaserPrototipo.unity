@@ -5495,7 +5495,7 @@ PrefabInstance:
     - target: {fileID: 717062465987514804, guid: 1d5a262aa480c164494bf64c6b59f232,
         type: 3}
       propertyPath: m_Name
-      value: Lightsaber
+      value: Lightsaber 1
       objectReference: {fileID: 0}
     - target: {fileID: 717062465987514804, guid: 1d5a262aa480c164494bf64c6b59f232,
         type: 3}
@@ -11444,7 +11444,7 @@ PrefabInstance:
     - target: {fileID: 717062465987514804, guid: 1d5a262aa480c164494bf64c6b59f232,
         type: 3}
       propertyPath: m_Name
-      value: Lightsaber (1)
+      value: Lightsaber 2
       objectReference: {fileID: 0}
     - target: {fileID: 717062465987514804, guid: 1d5a262aa480c164494bf64c6b59f232,
         type: 3}
