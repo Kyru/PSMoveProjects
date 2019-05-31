@@ -55,6 +55,8 @@ public class Lightsaber : MonoBehaviour
     bool loopClipPlaying;
     bool startGame;
 
+    public int moveNumber;
+
 
     void Start()
     {
@@ -77,7 +79,7 @@ public class Lightsaber : MonoBehaviour
         move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
 
         // Remember to initialize!
-        if (!move.Init(0))  // <F> 0 es el primer y único mando
+        if (!move.Init(moveNumber))  // <F> 0 es el primer y único mando
         {
             Destroy(move);  // If it failed to initialize, destroy and continue on
         }
