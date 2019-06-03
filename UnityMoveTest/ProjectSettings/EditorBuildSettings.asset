@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SableLaserPrototipoP1.unity
     guid: 270a45f3ff7031447969ca6b798ccf42
+  - enabled: 1
+    path: Assets/Scenes/SableLaserPrototipoP2.unity
+    guid: b9366a00b20e3c04d887060c4e12c136
+  - enabled: 1
+    path: Assets/Scenes/LightcubesMainMenu.unity
+    guid: 7c80988b46d350a4d9c364763c0bdc19
   m_configObjects: {}
