@@ -32,6 +32,10 @@ public class LightCube : MonoBehaviour
         cubesPivot = new Vector3(cubesPivotDistance, cubesPivotDistance, cubesPivotDistance);
     }
 
+    public int getPlayer(){
+        return player;
+    }
+
     void Update()
     {
         transform.Translate(Vector3.forward * speed * Time.deltaTime);

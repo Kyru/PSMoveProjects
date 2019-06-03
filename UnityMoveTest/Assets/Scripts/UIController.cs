@@ -69,6 +69,22 @@ public class UIController : MonoBehaviour
     void endGame()
     {
         gameOver.SetActive(true);
+        calibrationText.SetActive(true);
+        calibrationText.GetComponent<Text>().fontSize = 45;
+        if (scoreP1 > scoreP2)
+        {
+            calibrationText.GetComponent<Text>().text = "Player 1 Wins!";
+        }
+        else if (scoreP1 < scoreP2)
+        {
+            calibrationText.GetComponent<Text>().text = "Player 2 Wins!";
+        }
+        else
+        {
+            calibrationText.GetComponent<Text>().text = "Draw";
+        }
+
+
         Time.timeScale = 0f;
         Messenger.Broadcast(GameEvent.GAME_OVER);
     }

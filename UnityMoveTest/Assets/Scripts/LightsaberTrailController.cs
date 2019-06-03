@@ -29,23 +29,24 @@ public class LightsaberTrailController : MonoBehaviour
         {
             string materialTrail = GetComponent<Renderer>().material.name;
             string materialCube = other.GetComponent<Renderer>().material.name;
+            int cubePlayer = other.GetComponent<LightCube>().getPlayer();
 
-            if (materialTrail == "Lightsaber Blue (Instance)" && materialCube == "CubeBlue (Instance)")
+            if (materialTrail == "Lightsaber Blue (Instance)" && materialCube == "CubeBlue (Instance)" && player == cubePlayer)
             {
                 Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
                 other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
-            else if (materialTrail == "Lightsaber Green (Instance)" && materialCube == "CubeGreen (Instance)")
+            else if (materialTrail == "Lightsaber Green (Instance)" && materialCube == "CubeGreen (Instance)" && player == cubePlayer)
             {
                 Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
                 other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
-            else if (materialTrail == "Lightsaber Red (Instance)" && materialCube == "CubeRed (Instance)")
+            else if (materialTrail == "Lightsaber Red (Instance)" && materialCube == "CubeRed (Instance)" && player == cubePlayer)
             {
                 Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
                 other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
-            else if (materialTrail == "Lightsaber Purple (Instance)" && materialCube == "CubePurple (Instance)")
+            else if (materialTrail == "Lightsaber Purple (Instance)" && materialCube == "CubePurple (Instance)" && player == cubePlayer)
             {
                 Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
                 other.gameObject.GetComponent<LightCube>().cubeDestroyed();
