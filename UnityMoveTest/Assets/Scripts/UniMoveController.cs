@@ -221,6 +221,8 @@ public class UniMoveController : MonoBehaviour
 
         handle = psmove_connect_by_id(index);
 
+        Debug.Log("index " + index + " handle: " + handle);
+
         // Error check the result!
         if (handle == IntPtr.Zero) return false;
 
@@ -229,13 +231,23 @@ public class UniMoveController : MonoBehaviour
         fusion = psmove_fusion_new(tracker, 1.0f, 1000.0f);
         //psmove_tracker_set_mirror(tracker, 1);
 
-
-        while (psmove_tracker_enable(tracker, handle) != PSMoveTrackerStatus.Tracker_CALIBRATED) ;
+        if(index == 0){
+            while(psmove_tracker_enable_with_color(tracker, handle, 255, 0, 255) != PSMoveTracker_Status.Tracker_CALIBRATED);
+        } else {
+            while(psmove_tracker_enable_with_color(tracker, handle, 0, 255, 255) != PSMoveTracker_Status.Tracker_CALIBRATED);
+        }
+        //while (psmove_tracker_enable(tracker, handle) != PSMoveTrackerStatus.Tracker_CALIBRATED) ;
 
         psmove_enable_orientation(handle, 1);
 
         Debug.Log("PS Move has calibration: " + psmove_has_calibration(handle));
         Debug.Log("PS Move has orientation: " + psmove_has_orientation(handle));
+
+        byte r = 0, g = 0, b = 0;
+        psmove_tracker_get_color(tracker, handle, ref r, ref g, ref b);
+
+        Color newColor = new Color(r, g, b);
+        Debug.Log("index: " + index + " ,color " + newColor);
 
         psmove_reset_orientation(handle);
 
@@ -525,6 +537,8 @@ public class UniMoveController : MonoBehaviour
     {
         trigger = ((int)psmove_get_trigger(handle)) / 255f;
 
+        /* <F> Comentados cálculos innecesarios para quitarle carga al juego y que funcione más fluido
+        
         int x = 0, y = 0, z = 0;
         psmove_get_accelerometer(handle, ref x, ref y, ref z);
 
@@ -564,6 +578,8 @@ public class UniMoveController : MonoBehaviour
         battery = psmove_get_battery(handle);
 
         temperature = psmove_get_temperature(handle);
+
+        */
 
         float px = 0, py = 0, pz = 0;
 

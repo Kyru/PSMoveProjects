@@ -17,8 +17,13 @@ public class LightCube : MonoBehaviour
     public int explosionRadius;
     public float explosionUpward;
 
+    int player;
+
     void Start()
     {
+        if(this.transform.parent.gameObject.name == "CubeSpawnerP1") player = 1;
+        else player = 2;
+
         int randMaterial = Random.Range(0, 4);
         GetComponent<Renderer>().material = listMaterials[randMaterial];
         currentMaterial = GetComponent<Renderer>().material;
@@ -36,7 +41,7 @@ public class LightCube : MonoBehaviour
     {
         if (other.gameObject.tag == "CubeDestroyer")
         {
-            Messenger.Broadcast(GameEvent.MINUS_LIFE);
+            Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, player);
             Destroy(this.gameObject);
         }
     }

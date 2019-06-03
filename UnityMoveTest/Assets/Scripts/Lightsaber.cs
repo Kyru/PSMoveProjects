@@ -54,52 +54,21 @@ public class Lightsaber : MonoBehaviour
     bool gameOver;
     bool loopClipPlaying;
     bool startGame;
+    public int lightsaberID;
 
-    public int moveNumber;
-
+    public UniMoveController Move
+    {
+        get { return move; }
+        set { move = value; }
+    }
 
     void Start()
     {
-        /* NOTE! We recommend that you limit the maximum frequency between frames.
-		 * This is because the controllers use Update() and not FixedUpdate(),
-		 * and yet need to update often enough to respond sufficiently fast.
-		 * Unity advises to keep this value "between 1/10th and 1/3th of a second."
-		 * However, even 100 milliseconds could seem slightly sluggish, so you
-		 * might want to experiment w/ reducing this value even more.
-		 * Obviously, this should only be relevant in case your framerare is starting
-		 * to lag. Most of the time, Update() should be called very regularly.
-		 */
+        Messenger.AddListener(GameEvent.GAME_OVER, endGame);
+    }
 
-        Time.maximumDeltaTime = 0.1f;
-
-        int count = UniMoveController.GetNumConnected();
-
-        Debug.Log("count = " + count);
-
-        move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
-
-        // Remember to initialize!
-        if (!move.Init(moveNumber))  // <F> 0 es el primer y único mando
-        {
-            Destroy(move);  // If it failed to initialize, destroy and continue on
-        }
-
-        // This example program only uses Bluetooth-connected controllers
-        PSMoveConnectionType conn = move.ConnectionType;
-        if (conn == PSMoveConnectionType.Unknown || conn == PSMoveConnectionType.USB)
-        {
-            Destroy(move);
-        }
-        else
-        {
-            // Start all controllers with a white LED
-            move.SetLED(Color.magenta);
-            move.ResetOrientation();
-
-            transform.localRotation = move.Orientation;
-            transform.localPosition = move.Position;
-        }
-
+    public void AlternativeStart()     // called in TwoMovesTest as an alternative start method
+    {
         lightsaberOn = false;
         animator.SetBool("On", lightsaberOn);
         trailRenderer.emitting = lightsaberOn;
@@ -110,8 +79,6 @@ public class Lightsaber : MonoBehaviour
         trailGoodRenderer.material = lightsaberBlue;
         edgeRenderer.material = lightsaberBlue;
 
-        Messenger.AddListener(GameEvent.GAME_OVER, endGame);
-        Messenger.AddListener(GameEvent.ADD_SCORE, cubeDestroyed);
         gameOver = false;
         loopClipPlaying = false;
         startGame = true;
@@ -119,107 +86,120 @@ public class Lightsaber : MonoBehaviour
 
     void Update()
     {
+        if (move == null) this.gameObject.SetActive(false);
 
         if (!gameOver)
         {
-            if (move.GetButtonDown(PSMoveButton.Move))
+            if (move != null)
             {
-                audioControl.GetComponent<AudioControl>().ActivateAudioClip();
+                if (move.GetButtonDown(PSMoveButton.Move))
+                {
+                    audioControl.GetComponent<AudioControl>().ActivateAudioClip();
 
-                if(startGame){
-                    Messenger.Broadcast(GameEvent.START_GAME);
-                    startGame = false;
+                    if (startGame)
+                    {
+                        Messenger.Broadcast(GameEvent.START_GAME);
+                        startGame = false;
+                    }
+
+                    lightsaberOn = !lightsaberOn;
+                    animator.SetBool("On", lightsaberOn);
+                    //trailRenderer.emitting = lightsaberOn;
+                    //trailGood.SetActive(lightsaberOn);
+                    //lightsaberEdge.SetActive(lightsaberOn);
+                    //Invoke("delayLightsaberEdge", 1f);
+
+                    //StartCoroutine("ActivateRumble");
+                }
+                if (move.GetButtonDown(PSMoveButton.Square))
+                {
+                    trailGoodRenderer.material = lightsaberPurple;
+                    edgeRenderer.material = lightsaberPurple;
+                }
+                if (move.GetButtonDown(PSMoveButton.Triangle))
+                {
+                    trailGoodRenderer.material = lightsaberGreen;
+                    edgeRenderer.material = lightsaberGreen;
+                }
+                if (move.GetButtonDown(PSMoveButton.Circle))
+                {
+                    trailGoodRenderer.material = lightsaberRed;
+                    edgeRenderer.material = lightsaberRed;
+                }
+                if (move.GetButtonDown(PSMoveButton.Cross))
+                {
+                    trailGoodRenderer.material = lightsaberBlue;
+                    edgeRenderer.material = lightsaberBlue;
                 }
 
-                lightsaberOn = !lightsaberOn;
-                animator.SetBool("On", lightsaberOn);
-                //trailRenderer.emitting = lightsaberOn;
-                //trailGood.SetActive(lightsaberOn);
-                //lightsaberEdge.SetActive(lightsaberOn);
-                //Invoke("delayLightsaberEdge", 1f);
+                if (move.GetButtonDown(PSMoveButton.Select))
+                {
+                    move.ResetOrientation();
+                }
 
-                //StartCoroutine("ActivateRumble");
-            }
-            if (move.GetButtonDown(PSMoveButton.Square))
-            {
-                trailGoodRenderer.material = lightsaberPurple;
-                edgeRenderer.material = lightsaberPurple;
-            }
-            if (move.GetButtonDown(PSMoveButton.Triangle))
-            {
-                trailGoodRenderer.material = lightsaberGreen;
-                edgeRenderer.material = lightsaberGreen;
-            }
-            if (move.GetButtonDown(PSMoveButton.Circle))
-            {
-                trailGoodRenderer.material = lightsaberRed;
-                edgeRenderer.material = lightsaberRed;
-            }
-            if (move.GetButtonDown(PSMoveButton.Cross))
-            {
-                trailGoodRenderer.material = lightsaberBlue;
-                edgeRenderer.material = lightsaberBlue;
-            }
+                if (move.GetButtonDown(PSMoveButton.Start))
+                {
+                    canMove = !canMove;
+                }
 
-            if (move.GetButtonDown(PSMoveButton.Select))
-            {
-                move.ResetOrientation();
-            }
+                if (lightsaberOn && !loopClipPlaying)
+                {
+                    audioControl.GetComponent<AudioControl>().LoopAudioClip();
+                    loopClipPlaying = true;
+                }
 
-            if (move.GetButtonDown(PSMoveButton.Start))
-            {
-                canMove = !canMove;
-            }
+                if (!lightsaberOn && loopClipPlaying)
+                {
+                    audioControl.GetComponent<AudioControl>().LoopAudioClipStop();
+                    loopClipPlaying = false;
+                }
 
-            if (lightsaberOn && !loopClipPlaying)
-            {
-                audioControl.GetComponent<AudioControl>().LoopAudioClip();
-                loopClipPlaying = true;
-            }
-
-            if (!lightsaberOn && loopClipPlaying)
-            {
-                audioControl.GetComponent<AudioControl>().LoopAudioClipStop();
-                loopClipPlaying = false;
-            }
-
-            if (canMove)
-            {
-                transform.localRotation = move.Orientation;
-                transform.localPosition = move.Position;
-                //audioControl.GetComponent<AudioControl>().SwingAudioClip();
+                if (canMove)
+                {
+                    transform.localRotation = move.Orientation;
+                    transform.localPosition = move.Position;
+                    //audioControl.GetComponent<AudioControl>().SwingAudioClip();
+                }
             }
         }
     }
 
     void ActivateLightSaber()
     {
-        lightsaberEdge.SetActive(lightsaberOn);
-        trailGood.SetActive(lightsaberOn);
-        move.SetRumble(0f);
+        if (move != null)
+        {
+            lightsaberEdge.SetActive(lightsaberOn);
+            trailGood.SetActive(lightsaberOn);
+            move.SetRumble(0f);
+        }
     }
 
     void ActivateRumble()
     {
-        move.SetRumble(1f);
+        if (move != null) move.SetRumble(1f);
     }
 
     void DeactivateLightSaber()
     {
-        move.SetRumble(1f);
-        trailGood.SetActive(lightsaberOn);
+        if (move != null)
+        {
+            move.SetRumble(1f);
+            trailGood.SetActive(lightsaberOn);
+        }
     }
 
     void DeactivateRumble()
     {
-        move.SetRumble(0f);
+        if (move != null) move.SetRumble(0f);
     }
 
-    void cubeDestroyed(){
-        move.SetRumble(1f);
-        Invoke("DeactivateRumble", 0.8f);
-    }
-
+    /* <F> No se usa porque se ha pasado a la clase
+        void cubeDestroyed()
+        {
+            move.SetRumble(1f);
+            Invoke("DeactivateRumble", 0.8f);
+        }
+    */
     void endGame()
     {
         gameOver = true;
@@ -228,6 +208,5 @@ public class Lightsaber : MonoBehaviour
     void OnDestroy()
     {
         Messenger.RemoveListener(GameEvent.GAME_OVER, endGame);
-        Messenger.RemoveListener(GameEvent.ADD_SCORE, cubeDestroyed);
     }
 }

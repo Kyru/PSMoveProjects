@@ -10,6 +10,7 @@ public class LightsaberTrailController : MonoBehaviour
 {
 
     LightsaberTrail lightsaberTrail;
+    [SerializeField] int player;
 
     void Start()
     {
@@ -31,23 +32,23 @@ public class LightsaberTrailController : MonoBehaviour
 
             if (materialTrail == "Lightsaber Blue (Instance)" && materialCube == "CubeBlue (Instance)")
             {
-                Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
             else if (materialTrail == "Lightsaber Green (Instance)" && materialCube == "CubeGreen (Instance)")
             {
-                Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
             else if (materialTrail == "Lightsaber Red (Instance)" && materialCube == "CubeRed (Instance)")
             {
-                Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
             else if (materialTrail == "Lightsaber Purple (Instance)" && materialCube == "CubePurple (Instance)")
             {
-                Messenger.Broadcast(GameEvent.ADD_SCORE);
-                Destroy(other.gameObject);
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
         }
     }
