@@ -203,6 +203,9 @@ public class UniMoveController : MonoBehaviour
     private PSMove_Battery_Level battery = PSMove_Battery_Level.Batt_20Percent;
     private float temperature = 0f;
 
+    // <F> Variable para especificar la posición de la cámara para los cálculos necesarios en ProcessData()
+    private string cameraPosition;
+
     /// <summary>
     /// Event fired when the controller disconnects unexpectedly (i.e. on going out of range).
     /// </summary>
@@ -231,10 +234,13 @@ public class UniMoveController : MonoBehaviour
         fusion = psmove_fusion_new(tracker, 1.0f, 1000.0f);
         //psmove_tracker_set_mirror(tracker, 1);
 
-        if(index == 0){
-            while(psmove_tracker_enable_with_color(tracker, handle, 255, 0, 255) != PSMoveTracker_Status.Tracker_CALIBRATED);
-        } else {
-            while(psmove_tracker_enable_with_color(tracker, handle, 0, 255, 255) != PSMoveTracker_Status.Tracker_CALIBRATED);
+        if (index == 0)
+        {
+            while (psmove_tracker_enable_with_color(tracker, handle, 255, 0, 255) != PSMoveTracker_Status.Tracker_CALIBRATED) ;
+        }
+        else
+        {
+            while (psmove_tracker_enable_with_color(tracker, handle, 0, 255, 255) != PSMoveTracker_Status.Tracker_CALIBRATED) ;
         }
         //while (psmove_tracker_enable(tracker, handle) != PSMoveTrackerStatus.Tracker_CALIBRATED) ;
 
@@ -255,6 +261,14 @@ public class UniMoveController : MonoBehaviour
         // you need to remove manually from the OSX Bluetooth Control Panel, then re-connect.
         return (psmove_update_leds(handle) != 0);
     }
+
+    // <F> 
+    public string CameraPosition
+    {
+        get { return cameraPosition; }
+        set { cameraPosition = value; }
+    }
+
 
     /// <summary>
     /// Static function that returns the number of *all* controller connections.
@@ -582,36 +596,43 @@ public class UniMoveController : MonoBehaviour
         */
 
         float px = 0, py = 0, pz = 0;
+        if (cameraPosition != null)
+        {
+            if (cameraPosition == "Front")
+            {
+                // <F> Estos valores se utilizan cuando se quiere ver el mando desde frente
+                psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
 
-        /* <F> Estos valores se utilizan cuando se quiere ver el mando desde frente
-        psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
+                position.x = px * 5;
+                position.y = -py * 5;
+                position.z = (-pz * 5);
 
-        position.x = px * 5;
-        position.y = -py * 5;
-        position.z = (-pz * 5);
+                float rw = 0, rx = 0, ry = 0, rz = 0;
+                psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
 
-        float rw = 0, rx = 0, ry = 0, rz = 0;
-        psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
+                orientation.w = rw;
+                orientation.x = rx;
+                orientation.y = ry;
+                orientation.z = rz;
+            }
+            else if (cameraPosition == "Back")
+            {
+                //<F> Estos valores se utilizan si se quiere ver el mando desde atrás
+                psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
 
-        orientation.w = rw;
-        orientation.x = rx;
-        orientation.y = ry;
-        orientation.z = rz;
-        */
-        //<F> Estos valores se utilizan si se quiere ver el mando desde atrás
-        psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
+                position.x = -px * 5;
+                position.y = -py * 5;
+                position.z = -pz * 5;
 
-        position.x = -px * 5;
-        position.y = -py * 5;
-        position.z = -pz * 5;
+                float rw = 0, rx = 0, ry = 0, rz = 0;
+                psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
 
-        float rw = 0, rx = 0, ry = 0, rz = 0;
-        psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
-
-        orientation.w = rw;
-        orientation.x = rx;
-        orientation.y = -ry;
-        orientation.z = -rz;
+                orientation.w = rw;
+                orientation.x = rx;
+                orientation.y = -ry;
+                orientation.z = -rz;
+            }
+        }
     }
 
     #endregion

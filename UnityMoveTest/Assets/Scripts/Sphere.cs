@@ -59,6 +59,7 @@ public class Sphere : MonoBehaviour
         Debug.Log("count = " + count);
 
         move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
+        move.CameraPosition = "Front";
 
         // Remember to initialize!
         if (!move.Init(0))  // <F> 0 es el primer y único mando
@@ -94,7 +95,7 @@ public class Sphere : MonoBehaviour
         if (canMove)
         {
             transform.localRotation = move.Orientation;
-            //transform.localPosition = move.Position;
+            transform.localPosition = move.Position;
         }
     }
 

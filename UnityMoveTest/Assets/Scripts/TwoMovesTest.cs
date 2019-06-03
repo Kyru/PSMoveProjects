@@ -60,6 +60,7 @@ public class TwoMovesTest : MonoBehaviour
         for (int i = 0; i < count; i++)
         {
             UniMoveController move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
+            move.CameraPosition = "Back";
 
 
             // Remember to initialize!
