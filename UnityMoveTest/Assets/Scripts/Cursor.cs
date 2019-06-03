@@ -95,7 +95,6 @@ public class Cursor : MonoBehaviour
         transform.localPosition = newPosition;
 
         pointerEventData.position = Camera.main.WorldToScreenPoint(transform.position);
-        Debug.Log(pointerEventData.position);
 
         List<RaycastResult> results = new List<RaycastResult>();
         graphicRaycaster.Raycast(pointerEventData, results);

@@ -8,11 +8,15 @@ public class CubeSpawner : MonoBehaviour
     private bool spawnNext;
     private bool gameStarted;
 
+    void Awake()
+    {
+        Messenger.AddListener(GameEvent.START_GAME, startGame);
+    }
+
     void Start()
     {
         spawnNext = true;
         gameStarted = false;
-        Messenger.AddListener(GameEvent.START_GAME, startGame);
     }
 
     void startGame()

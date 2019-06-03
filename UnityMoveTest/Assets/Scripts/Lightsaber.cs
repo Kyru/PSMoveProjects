@@ -62,9 +62,10 @@ public class Lightsaber : MonoBehaviour
         set { move = value; }
     }
 
-    void Start()
+    void Awake()
     {
         Messenger.AddListener(GameEvent.GAME_OVER, endGame);
+        Messenger.AddListener(GameEvent.ONLY_ONE, endGame);
     }
 
     public void AlternativeStart()     // called in TwoMovesTest as an alternative start method
@@ -79,7 +80,8 @@ public class Lightsaber : MonoBehaviour
         trailGoodRenderer.material = lightsaberBlue;
         edgeRenderer.material = lightsaberBlue;
 
-        gameOver = false;
+        if (gameOver) gameOver = true;
+        else gameOver = false;
         loopClipPlaying = false;
         startGame = true;
     }
@@ -87,6 +89,8 @@ public class Lightsaber : MonoBehaviour
     void Update()
     {
         if (move == null) this.gameObject.SetActive(false);
+
+        Debug.Log("gameOver " + gameOver);
 
         if (!gameOver)
         {
@@ -208,5 +212,6 @@ public class Lightsaber : MonoBehaviour
     void OnDestroy()
     {
         Messenger.RemoveListener(GameEvent.GAME_OVER, endGame);
+        Messenger.RemoveListener(GameEvent.ONLY_ONE, endGame);
     }
 }

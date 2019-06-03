@@ -13,9 +13,13 @@ public class AudioControl : MonoBehaviour
     public AudioSource loopAudioSource;
     public AudioSource musicAudioSource;
 
-    private void Start()
+    void Awake()
     {
         Messenger.AddListener(GameEvent.GAME_OVER, endGame);
+    }
+
+    private void Start()
+    {
         musicAudioSource.loop = true;
         musicAudioSource.clip = musicClip;
         musicAudioSource.Play();
@@ -44,8 +48,9 @@ public class AudioControl : MonoBehaviour
         loopAudioSource.clip = loopClip;
         loopAudioSource.Play();
     }
-    
-    public void LoopAudioClipStop(){
+
+    public void LoopAudioClipStop()
+    {
         loopAudioSource.Stop();
     }
     void endGame()

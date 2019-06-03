@@ -19,13 +19,16 @@ public class UIController : MonoBehaviour
     public int scoreP2;
     public int lifeP2;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        Messenger.AddListener(GameEvent.ONLY_ONE, onlyOneController);
         Messenger<int>.AddListener(GameEvent.ADD_SCORE, addScore);
         Messenger<int>.AddListener(GameEvent.MINUS_LIFE, minusLife);
         Messenger.AddListener(GameEvent.START_GAME, startGame);
+    }
 
+    void Start()
+    {
         lifesTextP1.text = "Lifes: " + lifeP1;
         scoreTextP1.text = "Score: " + scoreP1;
         lifesTextP2.text = "Lifes: " + lifeP2;
@@ -94,10 +97,20 @@ public class UIController : MonoBehaviour
         calibrationText.SetActive(false);
     }
 
+    void onlyOneController()
+    {
+        calibrationText.SetActive(true);
+        calibrationText.GetComponent<Text>().fontSize = 30;
+        calibrationText.GetComponent<Text>().text = "Only one controller connected, to play this game-mode please use 2 controller";
+
+        Time.timeScale = 0f;
+    }
+
     void OnDestroy()
     {
         Messenger<int>.RemoveListener(GameEvent.ADD_SCORE, addScore);
         Messenger<int>.RemoveListener(GameEvent.MINUS_LIFE, minusLife);
         Messenger.RemoveListener(GameEvent.START_GAME, startGame);
+        Messenger.RemoveListener(GameEvent.ONLY_ONE, onlyOneController);
     }
 }

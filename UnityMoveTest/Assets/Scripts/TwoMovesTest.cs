@@ -34,11 +34,17 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class TwoMovesTest : MonoBehaviour
 {
     [SerializeField] List<GameObject> objects;
     List<UniMoveController> moves = new List<UniMoveController>();
+
+    void Awake()
+    {
+        Messenger<int>.AddListener(GameEvent.ADD_SCORE, cubeDestroyed);
+    }
     void Start()
     {
         /* NOTE! We recommend that you limit the maximum frequency between frames.
@@ -56,6 +62,15 @@ public class TwoMovesTest : MonoBehaviour
         int count = UniMoveController.GetNumConnected();
 
         Debug.Log("count = " + count);
+
+        if (count == 1)
+        {
+            if (SceneManager.GetActiveScene().name == "SableLaserPrototipoP2")
+            {
+                Debug.Log("broadcast only one");
+                Messenger.Broadcast(GameEvent.ONLY_ONE);
+            }
+        }
 
         for (int i = 0; i < count; i++)
         {
@@ -87,8 +102,6 @@ public class TwoMovesTest : MonoBehaviour
                 objects[i].GetComponent<Lightsaber>().AlternativeStart();
             }
         }
-
-        Messenger<int>.AddListener(GameEvent.ADD_SCORE, cubeDestroyed);
     }
 
     void DeactivateRumbleP1()
