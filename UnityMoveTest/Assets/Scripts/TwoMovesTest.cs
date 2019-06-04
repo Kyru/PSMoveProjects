@@ -71,6 +71,13 @@ public class TwoMovesTest : MonoBehaviour
                 Messenger.Broadcast(GameEvent.ONLY_ONE);
             }
         }
+        else if (count == 2)
+        {
+            if (SceneManager.GetActiveScene().name == "SableLaserPrototipoP1")
+            {
+                count = 1;
+            }
+        }
 
         for (int i = 0; i < count; i++)
         {
