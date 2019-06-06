@@ -90,8 +90,6 @@ public class Lightsaber : MonoBehaviour
     {
         if (move == null) this.gameObject.SetActive(false);
 
-        Debug.Log("gameOver " + gameOver);
-
         if (!gameOver)
         {
             if (move != null)

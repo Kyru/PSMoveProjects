@@ -15,23 +15,23 @@ public class EdgeController : MonoBehaviour
 
             if (materialEdge == "Lightsaber Blue (Instance)" && materialCube == "CubeBlue (Instance)")
             {
-                // Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
-                // other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
             else if (materialEdge == "Lightsaber Green (Instance)" && materialCube == "CubeGreen (Instance)")
             {
-                // Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
-                // other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
             else if (materialEdge == "Lightsaber Red (Instance)" && materialCube == "CubeRed (Instance)")
             {
-                // Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
-                // other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
             else if (materialEdge == "Lightsaber Purple (Instance)" && materialCube == "CubePurple (Instance)")
             {
-                // Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
-                // other.gameObject.GetComponent<LightCube>().cubeDestroyed();
+                Messenger<int>.Broadcast(GameEvent.ADD_SCORE, player);
+                other.gameObject.GetComponent<LightCube>().cubeDestroyed();
             }
         }
     }

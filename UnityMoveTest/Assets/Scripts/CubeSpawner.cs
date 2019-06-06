@@ -5,6 +5,8 @@ using UnityEngine;
 public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject cube;
+    [SerializeField] private List<Vector3> positions;
+    [SerializeField] private List<Vector3> rotations;
     private bool spawnNext;
     private bool gameStarted;
 
@@ -36,7 +38,10 @@ public class CubeSpawner : MonoBehaviour
     {
         spawnNext = false;
         yield return new WaitForSeconds(3f);
-        Instantiate(cube, transform.position, cube.transform.rotation, gameObject.transform);
+        int randPosition = Random.Range(0, positions.Count);
+        Debug.Log(randPosition);
+        Instantiate(cube, positions[randPosition], Quaternion.Euler(rotations[randPosition]), gameObject.transform);
+        // Instantiate(cube, transform.position, transform.rotation, gameObject.transform);
         spawnNext = true;
     }
 

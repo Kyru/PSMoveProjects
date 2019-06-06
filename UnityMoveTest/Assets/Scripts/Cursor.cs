@@ -44,6 +44,9 @@ public class Cursor : MonoBehaviour
     private GraphicRaycaster graphicRaycaster;
     private PointerEventData pointerEventData = new PointerEventData(null);
 
+    [SerializeField] Sprite hand_click;
+    [SerializeField] Sprite hand;
+
 
     void Start()
     {
@@ -89,7 +92,7 @@ public class Cursor : MonoBehaviour
 
     void Update()
     {
-        GetComponent<SpriteRenderer>().color = Color.white;
+        GetComponent<SpriteRenderer>().sprite = hand;
 
         Vector3 newPosition = new Vector3(move.Position.x, move.Position.y, -315);
         transform.localPosition = newPosition;
@@ -100,7 +103,7 @@ public class Cursor : MonoBehaviour
         graphicRaycaster.Raycast(pointerEventData, results);
         if (move.GetButtonDown(PSMoveButton.Move))
         {
-            GetComponent<SpriteRenderer>().color = Color.red;
+            GetComponent<SpriteRenderer>().sprite = hand_click;
             if (results.Count > 0)
             {
                 results[0].gameObject.GetComponentInParent<MainMenuButton>().goToScene();

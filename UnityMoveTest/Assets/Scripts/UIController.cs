@@ -72,8 +72,6 @@ public class UIController : MonoBehaviour
 
     void endGame()
     {
-        gameOver.SetActive(true);
-
         if (SceneManager.GetActiveScene().name == "SableLaserPrototipoP2")
         {
             calibrationText.SetActive(true);
@@ -91,6 +89,8 @@ public class UIController : MonoBehaviour
                 calibrationText.GetComponent<Text>().text = "Draw";
             }
         }
+        gameOver.GetComponent<Text>().text = "Game Over";
+        gameOver.SetActive(true);
 
         Time.timeScale = 0f;
         Messenger.Broadcast(GameEvent.GAME_OVER);
