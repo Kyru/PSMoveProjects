@@ -40,7 +40,7 @@ public class CubeSpawner : MonoBehaviour
         yield return new WaitForSeconds(3f);
         int randPosition = Random.Range(0, positions.Count);
         Debug.Log(randPosition);
-        Instantiate(cube, positions[randPosition], Quaternion.Euler(rotations[randPosition]), gameObject.transform);
+        Instantiate(cube, positions[randPosition], transform.rotation, gameObject.transform);     // Quaternion.Euler(rotations[randPosition])
         // Instantiate(cube, transform.position, transform.rotation, gameObject.transform);
         spawnNext = true;
     }
