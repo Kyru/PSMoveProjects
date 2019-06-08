@@ -10,6 +10,9 @@ public class Spaceship : MonoBehaviour
     public float standardVelocity = 100f;
     public float turboVelocity = 1000f;
     private bool canMove;
+    [SerializeField] private Camera insideCamera;
+    [SerializeField] private Camera outsideCamera;
+    private bool activateCamera;
 
     float Zrotation = 0;
 
@@ -18,6 +21,8 @@ public class Spaceship : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         canMove = false;
+        insideCamera.enabled = false;
+        outsideCamera.enabled = true;
     }
 
     // Update is called once per frame
@@ -25,7 +30,6 @@ public class Spaceship : MonoBehaviour
     {
         if (move.GetButtonDown(PSMoveButton.Move))
         {
-            Debug.Log("Hola amigos");
             move.ResetOrientation();
             canMove = true;
         }
@@ -36,6 +40,11 @@ public class Spaceship : MonoBehaviour
         if (move.GetButtonUp(PSMoveButton.Circle))
         {
             actualVelocity = standardVelocity;
+        }
+        if (move.GetButtonDown(PSMoveButton.Cross))
+        {
+            insideCamera.enabled = !insideCamera.enabled;
+            outsideCamera.enabled = !outsideCamera.enabled;
         }
 
         if (canMove)
