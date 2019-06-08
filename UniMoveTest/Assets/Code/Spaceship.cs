@@ -12,7 +12,9 @@ public class Spaceship : MonoBehaviour
     private bool canMove;
     [SerializeField] private Camera insideCamera;
     [SerializeField] private Camera outsideCamera;
-    private bool activateCamera;
+    [SerializeField] private GameObject bulletSpawnerLeft;
+    [SerializeField] private GameObject bulletSpawnerRight;
+    [SerializeField] private GameObject bullet;
 
     float Zrotation = 0;
 
@@ -45,6 +47,12 @@ public class Spaceship : MonoBehaviour
         {
             insideCamera.enabled = !insideCamera.enabled;
             outsideCamera.enabled = !outsideCamera.enabled;
+        }
+        if (move.Trigger > 0)
+        {
+            // Instantiate(Object original, Vector3 position, Quaternion rotation, Transform parent);
+            Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
+            Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
         }
 
         if (canMove)
