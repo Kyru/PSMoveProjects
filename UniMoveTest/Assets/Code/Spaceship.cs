@@ -35,43 +35,6 @@ public class Spaceship : MonoBehaviour
         {
             velocity = 10f;
         }
-        /*
-        // transform.Translate(Vector3.forward * velocity * Time.deltaTime);
-        // rigidbody.AddForce(transform.forward * velocity);
-        if (canMove)
-        {
-            rigidbody.velocity = transform.forward * velocity;
-
-            Debug.Log("transform rotation start " + transform.rotation);
-            Debug.Log("move Orientation start " + move.Orientation);
-
-            Vector3 moveOrientation = move.Orientation.eulerAngles;
-            Vector3 newRotation = transform.rotation.eulerAngles;
-
-            Debug.Log("move Orientation euler angles " + moveOrientation);
-            Debug.Log("transform rotation euler angles" + newRotation);
-
-            float y = Mathf.Round(move.Orientation.y * 100f) / 100f;
-
-            Debug.Log("y not rounded: " + move.Orientation.y);
-            Debug.Log("y rounded " + y);
-
-            // if (y > 0 || y <= 0.1f)
-            // {
-            // Debug.Log("entro dentro del if");
-            newRotation.x += (y * 15);
-            // }
-            // else if (y == 0.2f) transform.rotation = Quaternion.Euler(rotation * 1.5f);
-
-            Debug.Log("newRotation after if " + newRotation);
-
-            transform.rotation = Quaternion.Euler(newRotation);
-
-            Debug.Log("transform rotation al final " + transform.rotation);
-
-            // transform.rotation = move.Orientation;
-        }
-        */
 
         if (canMove)
         {
