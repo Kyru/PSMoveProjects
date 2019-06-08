@@ -15,8 +15,8 @@ public class Spaceship : MonoBehaviour
     [SerializeField] private GameObject bulletSpawnerLeft;
     [SerializeField] private GameObject bulletSpawnerRight;
     [SerializeField] private GameObject bullet;
-
-    float Zrotation = 0;
+    private float Zrotation = 0;
+    [SerializeField] private GameObject cockpit;
 
     // Start is called before the first frame update
     public void AlternativeStart()
@@ -25,6 +25,7 @@ public class Spaceship : MonoBehaviour
         canMove = false;
         insideCamera.enabled = false;
         outsideCamera.enabled = true;
+        cockpit.SetActive(false);
     }
 
     // Update is called once per frame
@@ -47,6 +48,9 @@ public class Spaceship : MonoBehaviour
         {
             insideCamera.enabled = !insideCamera.enabled;
             outsideCamera.enabled = !outsideCamera.enabled;
+
+            if(insideCamera.enabled) cockpit.SetActive(true);
+            else cockpit.SetActive(false);
         }
         if (move.Trigger > 0)
         {
