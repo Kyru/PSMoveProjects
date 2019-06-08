@@ -6,7 +6,9 @@ public class Spaceship : MonoBehaviour
 {
     private UniMoveController move;
     private Rigidbody rigidbody;
-    public float velocity = 10f;
+    public float actualVelocity = 100f;
+    public float standardVelocity = 100f;
+    public float turboVelocity = 1000f;
     private bool canMove;
 
     float Zrotation = 0;
@@ -29,16 +31,16 @@ public class Spaceship : MonoBehaviour
         }
         if (move.GetButtonDown(PSMoveButton.Circle))
         {
-            velocity = velocity * 10;
+            actualVelocity = turboVelocity;
         }
         if (move.GetButtonUp(PSMoveButton.Circle))
         {
-            velocity = 10f;
+            actualVelocity = standardVelocity;
         }
 
         if (canMove)
         {
-            rigidbody.velocity = transform.forward * velocity;
+            rigidbody.velocity = transform.forward * actualVelocity;
 
             float Ymove = move.Orientation.y; //probar mas adelante con el Round a ver si funciona mejor o no
             float Xrotation = transform.rotation.x;
