@@ -19,4 +19,12 @@ public class Bullet : MonoBehaviour
         //  transform.Translate(Vector3.forward * Time.deltaTime * velocity, Space.World);
         rigidbody.AddForce(transform.forward * velocity);
     }
+
+    void OnTriggerEnter(Collider other) {
+        Debug.Log(other.gameObject.name);
+        if(other.gameObject.tag == "Asteroid"){
+            Debug.Log("I should destroy this");
+            Destroy(other.gameObject);
+        }
+    }
 }

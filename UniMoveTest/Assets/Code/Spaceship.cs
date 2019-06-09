@@ -49,7 +49,7 @@ public class Spaceship : MonoBehaviour
             insideCamera.enabled = !insideCamera.enabled;
             outsideCamera.enabled = !outsideCamera.enabled;
 
-            if(insideCamera.enabled) cockpit.SetActive(true);
+            if (insideCamera.enabled) cockpit.SetActive(true);
             else cockpit.SetActive(false);
         }
         if (move.Trigger > 0)
@@ -88,6 +88,14 @@ public class Spaceship : MonoBehaviour
     {
         get { return move; }
         set { move = value; }
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "MapLimit")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
 }
