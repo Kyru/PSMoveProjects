@@ -10,6 +10,9 @@ public class Spaceship : MonoBehaviour
     public float standardVelocity = 100f;
     public float turboVelocity = 1000f;
     private bool canMove;
+    public int playerNum;
+    private Vector3 startPosition;
+    private Quaternion startRotation;
 
     // cameras
     [SerializeField] private Camera outsideCamera;      // 0   
@@ -32,6 +35,9 @@ public class Spaceship : MonoBehaviour
     // Start is called before the first frame update
     public void AlternativeStart()
     {
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+
         rigidbody = GetComponent<Rigidbody>();
         canMove = false;
 
@@ -153,7 +159,9 @@ public class Spaceship : MonoBehaviour
         }
         else if (other.gameObject.tag == "Asteroid")
         {
-            Destroy(this.gameObject);
+            Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
+            respawn();
+            // Destroy(this.gameObject);
         }
     }
 
@@ -163,5 +171,11 @@ public class Spaceship : MonoBehaviour
         {
             carefulMessage.SetActive(false);
         }
+    }
+
+    void respawn()
+    {
+        transform.position = startPosition;
+        transform.rotation = startRotation;
     }
 }
