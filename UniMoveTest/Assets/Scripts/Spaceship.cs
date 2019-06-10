@@ -160,8 +160,8 @@ public class Spaceship : MonoBehaviour
     {
         if (other.gameObject.tag == "MapLimit")
         {
-            Debug.Log("Touching mapLimit");
-            Destroy(this.gameObject);
+            Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
+            respawn();
         }
         else if (other.gameObject.tag == "MapAlert")
         {
