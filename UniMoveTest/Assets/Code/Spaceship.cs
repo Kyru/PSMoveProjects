@@ -25,7 +25,9 @@ public class Spaceship : MonoBehaviour
 
     private float Zrotation = 0;
     [SerializeField] private GameObject cockpit;
+    // canvas
     [SerializeField] private GameObject carefulMessage;
+    [SerializeField] private GameObject canvas;
 
     // Start is called before the first frame update
     public void AlternativeStart()
@@ -69,24 +71,28 @@ public class Spaceship : MonoBehaviour
                     topCamera.enabled = false;
                     farCamera.enabled = false;
                     outsideCamera.enabled = true;
+                    canvas.GetComponent<Canvas>().worldCamera = outsideCamera;
                     break;
                 case 1:
                     insideCamera.enabled = true;
                     topCamera.enabled = false;
                     farCamera.enabled = false;
                     outsideCamera.enabled = false;
+                    canvas.GetComponent<Canvas>().worldCamera = insideCamera;
                     break;
                 case 2:
                     insideCamera.enabled = false;
                     topCamera.enabled = false;
                     farCamera.enabled = true;
                     outsideCamera.enabled = false;
+                    canvas.GetComponent<Canvas>().worldCamera = farCamera;
                     break;
                 case 3:
                     insideCamera.enabled = false;
                     topCamera.enabled = true;
                     farCamera.enabled = false;
                     outsideCamera.enabled = false;
+                    canvas.GetComponent<Canvas>().worldCamera = topCamera;
                     break;
             }
 
@@ -94,7 +100,7 @@ public class Spaceship : MonoBehaviour
             else cockpit.SetActive(false);
 
             activeCamera++;
-            if(activeCamera == 4) activeCamera = 0;
+            if (activeCamera == 4) activeCamera = 0;
         }
         if (move.Trigger > 0)
         {
