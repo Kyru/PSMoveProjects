@@ -103,6 +103,10 @@ public class Spaceship : MonoBehaviour
         {
             carefulMessage.SetActive(true);
         }
+        else if (other.gameObject.tag == "Asteroid")
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     void OnTriggerExit(Collider other)
@@ -112,5 +116,4 @@ public class Spaceship : MonoBehaviour
             carefulMessage.SetActive(false);
         }
     }
-
 }
