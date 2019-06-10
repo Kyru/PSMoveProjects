@@ -13,6 +13,7 @@ public class Spaceship : MonoBehaviour
     public int playerNum;
     private Vector3 startPosition;
     private Quaternion startRotation;
+    private bool isGameOver;
 
     // cameras
     [SerializeField] private Camera outsideCamera;      // 0   
@@ -32,7 +33,11 @@ public class Spaceship : MonoBehaviour
     [SerializeField] private GameObject carefulMessage;
     [SerializeField] private GameObject canvas;
 
-    // Start is called before the first frame update
+    void Awake()
+    {
+        Messenger.AddListener(GameEvent.GAME_OVER, gameOver);
+    }
+
     public void AlternativeStart()
     {
         startPosition = transform.position;
@@ -40,6 +45,7 @@ public class Spaceship : MonoBehaviour
 
         rigidbody = GetComponent<Rigidbody>();
         canMove = false;
+        isGameOver = false;
 
         insideCamera.enabled = false;
         topCamera.enabled = false;
@@ -55,88 +61,92 @@ public class Spaceship : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (move.GetButtonDown(PSMoveButton.Move))
+        if (!isGameOver)
         {
-            move.ResetOrientation();
-            canMove = true;
-        }
-        if (move.GetButtonDown(PSMoveButton.Circle))
-        {
-            actualVelocity = turboVelocity;
-        }
-        if (move.GetButtonUp(PSMoveButton.Circle))
-        {
-            actualVelocity = standardVelocity;
-        }
-        if (move.GetButtonDown(PSMoveButton.Cross))
-        {
-            switch (activeCamera)
+            if (move.GetButtonDown(PSMoveButton.Move))
             {
-                case 0:
-                    insideCamera.enabled = false;
-                    topCamera.enabled = false;
-                    farCamera.enabled = false;
-                    outsideCamera.enabled = true;
-                    canvas.GetComponent<Canvas>().worldCamera = outsideCamera;
-                    break;
-                case 1:
-                    insideCamera.enabled = true;
-                    topCamera.enabled = false;
-                    farCamera.enabled = false;
-                    outsideCamera.enabled = false;
-                    canvas.GetComponent<Canvas>().worldCamera = insideCamera;
-                    break;
-                case 2:
-                    insideCamera.enabled = false;
-                    topCamera.enabled = false;
-                    farCamera.enabled = true;
-                    outsideCamera.enabled = false;
-                    canvas.GetComponent<Canvas>().worldCamera = farCamera;
-                    break;
-                case 3:
-                    insideCamera.enabled = false;
-                    topCamera.enabled = true;
-                    farCamera.enabled = false;
-                    outsideCamera.enabled = false;
-                    canvas.GetComponent<Canvas>().worldCamera = topCamera;
-                    break;
+                move.ResetOrientation();
+                canMove = true;
+            }
+            if (move.GetButtonDown(PSMoveButton.Circle))
+            {
+                actualVelocity = turboVelocity;
+            }
+            if (move.GetButtonUp(PSMoveButton.Circle))
+            {
+                actualVelocity = standardVelocity;
+            }
+            if (move.GetButtonDown(PSMoveButton.Cross))
+            {
+                switch (activeCamera)
+                {
+                    case 0:
+                        insideCamera.enabled = false;
+                        topCamera.enabled = false;
+                        farCamera.enabled = false;
+                        outsideCamera.enabled = true;
+                        canvas.GetComponent<Canvas>().worldCamera = outsideCamera;
+                        break;
+                    case 1:
+                        insideCamera.enabled = true;
+                        topCamera.enabled = false;
+                        farCamera.enabled = false;
+                        outsideCamera.enabled = false;
+                        canvas.GetComponent<Canvas>().worldCamera = insideCamera;
+                        break;
+                    case 2:
+                        insideCamera.enabled = false;
+                        topCamera.enabled = false;
+                        farCamera.enabled = true;
+                        outsideCamera.enabled = false;
+                        canvas.GetComponent<Canvas>().worldCamera = farCamera;
+                        break;
+                    case 3:
+                        insideCamera.enabled = false;
+                        topCamera.enabled = true;
+                        farCamera.enabled = false;
+                        outsideCamera.enabled = false;
+                        canvas.GetComponent<Canvas>().worldCamera = topCamera;
+                        break;
+                }
+
+                if (insideCamera.enabled) cockpit.SetActive(true);
+                else cockpit.SetActive(false);
+
+                activeCamera++;
+                if (activeCamera == 4) activeCamera = 0;
             }
 
-            if (insideCamera.enabled) cockpit.SetActive(true);
-            else cockpit.SetActive(false);
-
-            activeCamera++;
-            if (activeCamera == 4) activeCamera = 0;
-        }
-        if (move.Trigger > 0)
-        {
-            // Instantiate(Object original, Vector3 position, Quaternion rotation, Transform parent);
-            Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
-            Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
-        }
-
-        if (canMove)
-        {
-            rigidbody.velocity = transform.forward * actualVelocity;
-
-            float Ymove = move.Orientation.y; //probar mas adelante con el Round a ver si funciona mejor o no
-            float Xrotation = transform.rotation.x;
-
-            if (move.GetButtonDown(PSMoveButton.Square))
+            if (move.Trigger > 0)
             {
-                Zrotation = 1;
-            }
-            if (move.GetButtonDown(PSMoveButton.Triangle))
-            {
-                Zrotation = -1;
-            }
-            if (move.GetButtonUp(PSMoveButton.Triangle) || move.GetButtonUp(PSMoveButton.Square))
-            {
-                Zrotation = 0;
+                // Instantiate(Object original, Vector3 position, Quaternion rotation, Transform parent);
+                Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
+                Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
             }
 
-            transform.Rotate(move.Orientation.x * 10f, move.Orientation.y * 10f, Zrotation);
+            if (canMove)
+            {
+                rigidbody.velocity = transform.forward * actualVelocity;
 
+                float Ymove = move.Orientation.y; //probar mas adelante con el Round a ver si funciona mejor o no
+                float Xrotation = transform.rotation.x;
+
+                if (move.GetButtonDown(PSMoveButton.Square))
+                {
+                    Zrotation = 1;
+                }
+                if (move.GetButtonDown(PSMoveButton.Triangle))
+                {
+                    Zrotation = -1;
+                }
+                if (move.GetButtonUp(PSMoveButton.Triangle) || move.GetButtonUp(PSMoveButton.Square))
+                {
+                    Zrotation = 0;
+                }
+
+                transform.Rotate(move.Orientation.x * 10f, move.Orientation.y * 10f, Zrotation);
+
+            }
         }
     }
 
@@ -177,5 +187,16 @@ public class Spaceship : MonoBehaviour
     {
         transform.position = startPosition;
         transform.rotation = startRotation;
+    }
+
+    void gameOver()
+    {
+        rigidbody.velocity = new Vector3(0, 0, 0);
+        isGameOver = true;
+    }
+
+    void OnDestroy()
+    {
+        Messenger.RemoveListener(GameEvent.GAME_OVER, gameOver);
     }
 }

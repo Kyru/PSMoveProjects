@@ -71,6 +71,7 @@ public class UIController : MonoBehaviour
             endGameTextWhiteP2.text = "You Lose!";
             endGameTextBlackP2.text = "You Lose!";
         }
+        Messenger.Broadcast(GameEvent.GAME_OVER);
     }
 
     void OnDestroy()
