@@ -72,9 +72,11 @@ GameObject:
   - component: {fileID: 469044}
   - component: {fileID: 5428902}
   - component: {fileID: 11467940}
+  - component: {fileID: 5594201349432521316}
+  - component: {fileID: 2592314334053857918}
   m_Layer: 0
   m_Name: Asteroid 3
-  m_TagString: Enemy
+  m_TagString: Asteroid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -123,6 +125,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tumble: 0.25
+--- !u!135 &5594201349432521316
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.3038762
+  m_Center: {x: -0.44, y: -0.59, z: 0.05073154}
+--- !u!135 &2592314334053857918
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 130102}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.4868244
+  m_Center: {x: 0.29261124, y: 0.15, z: 0.13558042}
 --- !u!1 &153142
 GameObject:
   m_ObjectHideFlags: 0

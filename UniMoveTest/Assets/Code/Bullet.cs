@@ -20,10 +20,15 @@ public class Bullet : MonoBehaviour
         rigidbody.AddForce(transform.forward * velocity);
     }
 
-    void OnTriggerEnter(Collider other) {
-        if(other.gameObject.tag == "Asteroid"){
-            Debug.Log("I should destroy this");
-            Destroy(other.gameObject);
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Asteroid")
+        {
+            Destroy(this.gameObject);
+        }
+        else if (other.gameObject.tag == "MapLimit")
+        {
+            Destroy(this.gameObject);
         }
     }
 }
