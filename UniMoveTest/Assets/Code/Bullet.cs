@@ -21,7 +21,6 @@ public class Bullet : MonoBehaviour
     }
 
     void OnTriggerEnter(Collider other) {
-        Debug.Log(other.gameObject.name);
         if(other.gameObject.tag == "Asteroid"){
             Debug.Log("I should destroy this");
             Destroy(other.gameObject);

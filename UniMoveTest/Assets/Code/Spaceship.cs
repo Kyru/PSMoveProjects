@@ -17,6 +17,7 @@ public class Spaceship : MonoBehaviour
     [SerializeField] private GameObject bullet;
     private float Zrotation = 0;
     [SerializeField] private GameObject cockpit;
+    [SerializeField] private GameObject carefulMessage;
 
     // Start is called before the first frame update
     public void AlternativeStart()
@@ -26,6 +27,7 @@ public class Spaceship : MonoBehaviour
         insideCamera.enabled = false;
         outsideCamera.enabled = true;
         cockpit.SetActive(false);
+        carefulMessage.SetActive(false);
     }
 
     // Update is called once per frame
@@ -94,7 +96,20 @@ public class Spaceship : MonoBehaviour
     {
         if (other.gameObject.tag == "MapLimit")
         {
+            Debug.Log("Touching mapLimit");
             Destroy(this.gameObject);
+        }
+        else if (other.gameObject.tag == "MapAlert")
+        {
+            carefulMessage.SetActive(true);
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "MapAlert")
+        {
+            carefulMessage.SetActive(false);
         }
     }
 
