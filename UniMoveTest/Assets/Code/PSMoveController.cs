@@ -50,12 +50,12 @@ public class PSMoveController : MonoBehaviour
                 moves.Add(move);
                 move.InitOrientation();
                 move.ResetOrientation();
+                
+                if(i == 0) move.SetLED(Color.magenta);          // <F> player 1
+                else move.SetLED(Color.cyan);                   // <F> player 2
 
                 players[i].GetComponent<Spaceship>().Move = move;
                 players[i].GetComponent<Spaceship>().AlternativeStart();
-
-                // Start all controllers with a white LED
-                move.SetLED(Color.white);
             }
         }
     }

@@ -10,11 +10,19 @@ public class Spaceship : MonoBehaviour
     public float standardVelocity = 100f;
     public float turboVelocity = 1000f;
     private bool canMove;
-    [SerializeField] private Camera insideCamera;
-    [SerializeField] private Camera outsideCamera;
+
+    // cameras
+    [SerializeField] private Camera outsideCamera;      // 0   
+    [SerializeField] private Camera insideCamera;       // 1
+    [SerializeField] private Camera topCamera;          // 2
+    [SerializeField] private Camera farCamera;          // 3
+    private int activeCamera;
+
+    // bullets
     [SerializeField] private GameObject bulletSpawnerLeft;
     [SerializeField] private GameObject bulletSpawnerRight;
     [SerializeField] private GameObject bullet;
+
     private float Zrotation = 0;
     [SerializeField] private GameObject cockpit;
     [SerializeField] private GameObject carefulMessage;
@@ -24,8 +32,14 @@ public class Spaceship : MonoBehaviour
     {
         rigidbody = GetComponent<Rigidbody>();
         canMove = false;
+
         insideCamera.enabled = false;
+        topCamera.enabled = false;
+        farCamera.enabled = false;
         outsideCamera.enabled = true;
+
+        activeCamera = 0;
+
         cockpit.SetActive(false);
         carefulMessage.SetActive(false);
     }
@@ -48,11 +62,39 @@ public class Spaceship : MonoBehaviour
         }
         if (move.GetButtonDown(PSMoveButton.Cross))
         {
-            insideCamera.enabled = !insideCamera.enabled;
-            outsideCamera.enabled = !outsideCamera.enabled;
+            switch (activeCamera)
+            {
+                case 0:
+                    insideCamera.enabled = false;
+                    topCamera.enabled = false;
+                    farCamera.enabled = false;
+                    outsideCamera.enabled = true;
+                    break;
+                case 1:
+                    insideCamera.enabled = true;
+                    topCamera.enabled = false;
+                    farCamera.enabled = false;
+                    outsideCamera.enabled = false;
+                    break;
+                case 2:
+                    insideCamera.enabled = false;
+                    topCamera.enabled = false;
+                    farCamera.enabled = true;
+                    outsideCamera.enabled = false;
+                    break;
+                case 3:
+                    insideCamera.enabled = false;
+                    topCamera.enabled = true;
+                    farCamera.enabled = false;
+                    outsideCamera.enabled = false;
+                    break;
+            }
 
             if (insideCamera.enabled) cockpit.SetActive(true);
             else cockpit.SetActive(false);
+
+            activeCamera++;
+            if(activeCamera == 4) activeCamera = 0;
         }
         if (move.Trigger > 0)
         {
