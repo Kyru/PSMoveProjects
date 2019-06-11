@@ -9,11 +9,16 @@ public class Spaceship : MonoBehaviour
     public float actualVelocity = 100f;
     public float standardVelocity = 100f;
     public float turboVelocity = 1000f;
+    private float Zrotation = 0;
     private bool canMove;
     public int playerNum;
     private Vector3 startPosition;
     private Quaternion startRotation;
     private bool isGameOver;
+
+    // explosion
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject spaceshipBody;
 
     // cameras
     [SerializeField] private Camera outsideCamera;      // 0   
@@ -21,14 +26,13 @@ public class Spaceship : MonoBehaviour
     [SerializeField] private Camera topCamera;          // 2
     [SerializeField] private Camera farCamera;          // 3
     private int activeCamera;
+    [SerializeField] private GameObject cockpit;
 
     // bullets
     [SerializeField] private GameObject bulletSpawnerLeft;
     [SerializeField] private GameObject bulletSpawnerRight;
     [SerializeField] private GameObject bullet;
 
-    private float Zrotation = 0;
-    [SerializeField] private GameObject cockpit;
     // canvas
     [SerializeField] private GameObject carefulMessage;
     [SerializeField] private GameObject canvas;
@@ -56,6 +60,8 @@ public class Spaceship : MonoBehaviour
 
         cockpit.SetActive(false);
         carefulMessage.SetActive(false);
+
+        explosion.SetActive(false);
     }
 
     // Update is called once per frame
@@ -161,7 +167,8 @@ public class Spaceship : MonoBehaviour
         if (other.gameObject.tag == "MapLimit")
         {
             Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
-            respawn();
+            triggerExplosion();
+            Invoke("respawn", 2f);
         }
         else if (other.gameObject.tag == "MapAlert")
         {
@@ -170,8 +177,8 @@ public class Spaceship : MonoBehaviour
         else if (other.gameObject.tag == "Asteroid")
         {
             Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
-            respawn();
-            // Destroy(this.gameObject);
+            triggerExplosion();
+            Invoke("respawn", 2f);
         }
     }
 
@@ -183,10 +190,34 @@ public class Spaceship : MonoBehaviour
         }
     }
 
+    void triggerExplosion()
+    {
+        canMove = false;
+        rigidbody.velocity = new Vector3(0, 0, 0);
+
+        spaceshipBody.SetActive(false);
+        explosion.SetActive(true);
+
+        foreach (Collider c in GetComponents<Collider>())
+        {
+            c.enabled = false;
+        }
+    }
+
     void respawn()
     {
+        foreach (Collider c in GetComponents<Collider>())
+        {
+            c.enabled = true;
+        }
+
+        spaceshipBody.SetActive(true);
+        explosion.SetActive(false);
+
         transform.position = startPosition;
         transform.rotation = startRotation;
+
+        canMove = false;
     }
 
     void gameOver()
