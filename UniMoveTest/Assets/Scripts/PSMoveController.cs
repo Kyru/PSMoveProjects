@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PSMoveController : MonoBehaviour
 {
 
     private List<UniMoveController> moves = new List<UniMoveController>();
-    [SerializeField] List<GameObject> players;
+    [SerializeField] private List<GameObject> players;
+    [SerializeField] private Text noMovesText;
 
     void Start()
     {
@@ -24,45 +26,52 @@ public class PSMoveController : MonoBehaviour
         int count = UniMoveController.GetNumConnected();
         Debug.Log("count = " + count);
 
-        // Iterate through all connections (USB and Bluetooth)
-        for (int i = 0; i < count; i++)
+        if (count == 0)
         {
-            UniMoveController move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
+            noMovesText.text = "No moves connected!";
+        }
+        else if (count == 1)
+        {
+            noMovesText.text = "Only 1 move connected!";
+        }
+        else
+        {
+            noMovesText.enabled = false;
 
-
-            // Remember to initialize!
-            if (!move.Init(i))
+            // Iterate through all connections (USB and Bluetooth)
+            for (int i = 0; i < count; i++)
             {
-                Destroy(move);  // If it failed to initialize, destroy and continue on
-                continue;
-            }
+                UniMoveController move = gameObject.AddComponent<UniMoveController>();  // It's a MonoBehaviour, so we can't just call a constructor
+
+
+                // Remember to initialize!
+                if (!move.Init(i))
+                {
+                    Destroy(move);  // If it failed to initialize, destroy and continue on
+                    continue;
+                }
 
 
 
-            // This example program only uses Bluetooth-connected controllers
-            PSMoveConnectionType conn = move.ConnectionType;
-            if (conn == PSMoveConnectionType.Unknown || conn == PSMoveConnectionType.USB)
-            {
-                Destroy(move);
-            }
-            else
-            {
-                moves.Add(move);
-                move.InitOrientation();
-                move.ResetOrientation();
-                
-                if(i == 0) move.SetLED(Color.magenta);          // <F> player 1
-                else move.SetLED(Color.cyan);                   // <F> player 2
+                // This example program only uses Bluetooth-connected controllers
+                PSMoveConnectionType conn = move.ConnectionType;
+                if (conn == PSMoveConnectionType.Unknown || conn == PSMoveConnectionType.USB)
+                {
+                    Destroy(move);
+                }
+                else
+                {
+                    moves.Add(move);
+                    move.InitOrientation();
+                    move.ResetOrientation();
 
-                players[i].GetComponent<Spaceship>().Move = move;
-                players[i].GetComponent<Spaceship>().AlternativeStart();
+                    if (i == 0) move.SetLED(Color.magenta);          // <F> player 1
+                    else move.SetLED(Color.cyan);                   // <F> player 2
+
+                    players[i].GetComponent<Spaceship>().Move = move;
+                    players[i].GetComponent<Spaceship>().AlternativeStart();
+                }
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }

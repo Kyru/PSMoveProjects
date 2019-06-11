@@ -67,7 +67,7 @@ public class Spaceship : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isGameOver)
+        if (!isGameOver && move != null)
         {
             if (move.GetButtonDown(PSMoveButton.Move))
             {
