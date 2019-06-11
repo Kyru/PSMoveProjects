@@ -15,6 +15,7 @@ public class Spaceship : MonoBehaviour
     private Vector3 startPosition;
     private Quaternion startRotation;
     private bool isGameOver;
+    private string player;
 
     // explosion
     [SerializeField] private GameObject explosion;
@@ -62,6 +63,8 @@ public class Spaceship : MonoBehaviour
         carefulMessage.SetActive(false);
 
         explosion.SetActive(false);
+        if (playerNum == 1) player = "Player1";
+        else if (playerNum == 2) player = "Player2";
     }
 
     // Update is called once per frame
@@ -180,11 +183,25 @@ public class Spaceship : MonoBehaviour
             triggerExplosion();
             Invoke("respawn", 2f);
         }
-        else if (other.gameObject.tag == "Bullet")
+        else if (other.gameObject.tag == "BulletP1")
         {
-            Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
-            triggerExplosion();
-            Invoke("respawn", 2f);
+            Debug.Log("entro en BulletP1 y soy = " + this.gameObject.name);
+            if (this.gameObject.name != "Player1")
+            {
+                Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
+                triggerExplosion();
+                Invoke("respawn", 2f);
+            }
+        }
+        else if (other.gameObject.tag == "BulletP2")
+        {
+            Debug.Log("entro en BulletP2 y soy = " + this.gameObject.name);
+            if (this.gameObject.name != "Player2")
+            {
+                Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
+                triggerExplosion();
+                Invoke("respawn", 2f);
+            }
         }
     }
 

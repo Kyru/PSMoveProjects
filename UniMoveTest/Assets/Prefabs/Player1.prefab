@@ -262,7 +262,7 @@ MonoBehaviour:
   cockpit: {fileID: 2294015396014254647}
   bulletSpawnerLeft: {fileID: 2294015396667919736}
   bulletSpawnerRight: {fileID: 2294015396316156370}
-  bullet: {fileID: 5157004437591972077, guid: 849d140e6c0fa2a47972a4fa6607d12a, type: 3}
+  bullet: {fileID: 2306909255969178118, guid: 8828ae238b51d054aa7ea849c88310fe, type: 3}
   carefulMessage: {fileID: 0}
   canvas: {fileID: 0}
 --- !u!54 &2294015395920803302

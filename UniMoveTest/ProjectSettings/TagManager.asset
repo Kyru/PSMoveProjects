@@ -8,6 +8,9 @@ TagManager:
   - MapLimit
   - MapAlert
   - Bullet
+  - MoveController
+  - BulletP1
+  - BulletP2
   layers:
   - Default
   - TransparentFX
