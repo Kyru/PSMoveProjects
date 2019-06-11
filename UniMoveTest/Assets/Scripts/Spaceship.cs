@@ -180,6 +180,12 @@ public class Spaceship : MonoBehaviour
             triggerExplosion();
             Invoke("respawn", 2f);
         }
+        else if (other.gameObject.tag == "Bullet")
+        {
+            Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
+            triggerExplosion();
+            Invoke("respawn", 2f);
+        }
     }
 
     void OnTriggerExit(Collider other)

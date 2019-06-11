@@ -5,9 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Asteroid
-  - Enemy
   - MapLimit
   - MapAlert
+  - Bullet
   layers:
   - Default
   - TransparentFX
