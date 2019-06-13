@@ -45,6 +45,10 @@ public class Spaceship : MonoBehaviour
     [SerializeField] private GameObject turboBar;
     private float maxBar = 1f;
 
+    // sound
+    [SerializeField] private GameObject audioSource;
+    private bool isPlayingSound;
+
 
     void Awake()
     {
@@ -79,6 +83,8 @@ public class Spaceship : MonoBehaviour
         turboBar.GetComponent<Image>().fillAmount = maxBar;
         circleButtonDown = false;
         isReloading = false;
+
+        isPlayingSound = false;
     }
 
     // Update is called once per frame
@@ -92,86 +98,103 @@ public class Spaceship : MonoBehaviour
                 canMove = true;
             }
 
-            if (move.GetButtonDown(PSMoveButton.Circle))
-            {
-                circleButtonDown = true;
-            }
-
-            if (circleButtonDown)
-            {
-                turboBar.GetComponent<Image>().fillAmount -= 0.2f;
-                actualVelocity = turboVelocity;
-                if (turboBar.GetComponent<Image>().fillAmount <= 0)
-                {
-                    actualVelocity = standardVelocity;
-                    circleButtonDown = false;
-                }
-            }
-
-            turboBar.GetComponent<Image>().fillAmount += 0.01f;
-
-            if (move.GetButtonDown(PSMoveButton.Cross))
-            {
-                switch (activeCamera)
-                {
-                    case 0:
-                        insideCamera.enabled = false;
-                        topCamera.enabled = false;
-                        farCamera.enabled = false;
-                        outsideCamera.enabled = true;
-                        canvas.GetComponent<Canvas>().worldCamera = outsideCamera;
-                        break;
-                    case 1:
-                        insideCamera.enabled = true;
-                        topCamera.enabled = false;
-                        farCamera.enabled = false;
-                        outsideCamera.enabled = false;
-                        canvas.GetComponent<Canvas>().worldCamera = insideCamera;
-                        break;
-                    case 2:
-                        insideCamera.enabled = false;
-                        topCamera.enabled = false;
-                        farCamera.enabled = true;
-                        outsideCamera.enabled = false;
-                        canvas.GetComponent<Canvas>().worldCamera = farCamera;
-                        break;
-                    case 3:
-                        insideCamera.enabled = false;
-                        topCamera.enabled = true;
-                        farCamera.enabled = false;
-                        outsideCamera.enabled = false;
-                        canvas.GetComponent<Canvas>().worldCamera = topCamera;
-                        break;
-                }
-
-                if (insideCamera.enabled) cockpit.SetActive(true);
-                else cockpit.SetActive(false);
-
-                activeCamera++;
-                if (activeCamera == 4) activeCamera = 0;
-            }
-
-            if (move.Trigger > 0)
-            {
-                if (!isReloading)
-                {
-                    if (shootBar.GetComponent<Image>().fillAmount > 0)
-                    {
-                        shootBar.GetComponent<Image>().fillAmount -= 0.01f;
-                        Debug.Log("fill amount trigger " + shootBar.GetComponent<Image>().fillAmount);
-                        Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
-                        Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
-                    }
-                }
-            }
-
-            if (shootBar.GetComponent<Image>().fillAmount <= 0 && !isReloading)
-            {
-                StartCoroutine("reloadBar");
-            }
-
             if (canMove)
             {
+
+                if (move.GetButtonDown(PSMoveButton.Circle))
+                {
+                    circleButtonDown = true;
+                }
+
+                if (circleButtonDown)
+                {
+                    turboBar.GetComponent<Image>().fillAmount -= 0.2f;
+                    actualVelocity = turboVelocity;
+                    if (turboBar.GetComponent<Image>().fillAmount <= 0)
+                    {
+                        actualVelocity = standardVelocity;
+                        circleButtonDown = false;
+                    }
+                }
+
+                turboBar.GetComponent<Image>().fillAmount += 0.01f;
+
+                if (move.GetButtonDown(PSMoveButton.Cross))
+                {
+                    switch (activeCamera)
+                    {
+                        case 0:
+                            insideCamera.enabled = false;
+                            topCamera.enabled = false;
+                            farCamera.enabled = false;
+                            outsideCamera.enabled = true;
+                            canvas.GetComponent<Canvas>().worldCamera = outsideCamera;
+                            break;
+                        case 1:
+                            insideCamera.enabled = true;
+                            topCamera.enabled = false;
+                            farCamera.enabled = false;
+                            outsideCamera.enabled = false;
+                            canvas.GetComponent<Canvas>().worldCamera = insideCamera;
+                            break;
+                        case 2:
+                            insideCamera.enabled = false;
+                            topCamera.enabled = false;
+                            farCamera.enabled = true;
+                            outsideCamera.enabled = false;
+                            canvas.GetComponent<Canvas>().worldCamera = farCamera;
+                            break;
+                        case 3:
+                            insideCamera.enabled = false;
+                            topCamera.enabled = true;
+                            farCamera.enabled = false;
+                            outsideCamera.enabled = false;
+                            canvas.GetComponent<Canvas>().worldCamera = topCamera;
+                            break;
+                    }
+
+                    if (insideCamera.enabled) cockpit.SetActive(true);
+                    else cockpit.SetActive(false);
+
+                    activeCamera++;
+                    if (activeCamera == 4) activeCamera = 0;
+                }
+
+                if (move.Trigger > 0)
+                {
+                    if (!isReloading)
+                    {
+                        if (shootBar.GetComponent<Image>().fillAmount > 0)
+                        {
+                            if (!isPlayingSound)
+                            {
+                                audioSource.GetComponent<AudioController>().SetLoop(true);
+                                audioSource.GetComponent<AudioController>().PlayAudioClip(1); // play laser sound
+                                isPlayingSound = true;
+                            }
+                            shootBar.GetComponent<Image>().fillAmount -= 0.01f;
+                            Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
+                            Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
+                        }
+                    }
+                    else
+                    {
+                        audioSource.GetComponent<AudioController>().SetLoop(false);
+                        isPlayingSound = false;
+                    }
+                }
+                else
+                {
+                    audioSource.GetComponent<AudioController>().SetLoop(false);
+                    isPlayingSound = false;
+                }
+
+                if (shootBar.GetComponent<Image>().fillAmount <= 0 && !isReloading)
+                {
+                    StartCoroutine("reloadBar");
+                }
+
+
                 rigidbody.velocity = transform.forward * actualVelocity;
 
                 float Ymove = move.Orientation.y; //probar mas adelante con el Round a ver si funciona mejor o no
@@ -273,6 +296,8 @@ public class Spaceship : MonoBehaviour
 
     public void triggerExplosion()
     {
+        audioSource.GetComponent<AudioController>().SetLoop(false);
+        audioSource.GetComponent<AudioController>().PlayAudioClip(0); // play explosion sound
         canMove = false;
         rigidbody.velocity = new Vector3(0, 0, 0);
 
