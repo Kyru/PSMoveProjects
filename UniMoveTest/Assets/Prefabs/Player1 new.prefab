@@ -661,6 +661,7 @@ MonoBehaviour:
   playerNum: 1
   explosion: {fileID: 7006517041052973455}
   spaceshipBody: {fileID: 3260329654038679070}
+  pyramid: {fileID: 2362699594371674748}
   outsideCamera: {fileID: 6701386649777631681}
   insideCamera: {fileID: 6701386650041692591}
   topCamera: {fileID: 8817407368018939505}
@@ -671,6 +672,8 @@ MonoBehaviour:
   bullet: {fileID: 2306909255969178118, guid: 8828ae238b51d054aa7ea849c88310fe, type: 3}
   carefulMessage: {fileID: 0}
   canvas: {fileID: 0}
+  shootBar: {fileID: 0}
+  turboBar: {fileID: 0}
 --- !u!54 &6701386651716182569
 Rigidbody:
   m_ObjectHideFlags: 0

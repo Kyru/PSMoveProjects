@@ -23,6 +23,7 @@ public class Spaceship : MonoBehaviour
     // explosion
     [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject spaceshipBody;
+    [SerializeField] private GameObject pyramid;
 
     // cameras
     [SerializeField] private Camera outsideCamera;      // 0   
@@ -264,6 +265,7 @@ public class Spaceship : MonoBehaviour
 
         spaceshipBody.SetActive(false);
         explosion.SetActive(true);
+        pyramid.SetActive(false);
 
         foreach (Collider c in GetComponents<Collider>())
         {
@@ -280,6 +282,7 @@ public class Spaceship : MonoBehaviour
 
         spaceshipBody.SetActive(true);
         explosion.SetActive(false);
+        pyramid.SetActive(true);
 
         transform.position = startPosition;
         transform.rotation = startRotation;
