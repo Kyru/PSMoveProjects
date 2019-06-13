@@ -218,7 +218,6 @@ public class Spaceship : MonoBehaviour
         {
             Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
             triggerExplosion();
-            Invoke("respawn", 2f);
         }
         else if (other.gameObject.tag == "MapAlert")
         {
@@ -228,7 +227,6 @@ public class Spaceship : MonoBehaviour
         {
             Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
             triggerExplosion();
-            Invoke("respawn", 2f);
         }
         else if (other.gameObject.tag == "BulletP1")
         {
@@ -236,7 +234,6 @@ public class Spaceship : MonoBehaviour
             {
                 Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
                 triggerExplosion();
-                Invoke("respawn", 2f);
             }
         }
         else if (other.gameObject.tag == "BulletP2")
@@ -245,10 +242,28 @@ public class Spaceship : MonoBehaviour
             {
                 Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
                 triggerExplosion();
-                Invoke("respawn", 2f);
             }
         }
     }
+
+    void OnCollisionEnter(Collision other)
+    {
+        // The one who manages collisions between players is Player1
+        if (other.gameObject.name == "Player1" && this.gameObject.name != "Player1")
+        {
+            Messenger.Broadcast(GameEvent.MINUS_LIFE_BOTH);
+            triggerExplosion();
+            other.gameObject.GetComponent<Spaceship>().triggerExplosion();
+        }
+        /*
+        else if (other.gameObject.name == "Player2" && this.gameObject.name != "Player2")
+        {
+            Messenger.Broadcast(GameEvent.MINUS_LIFE_BOTH);
+            triggerExplosion();
+            Invoke("respawn", 2f);
+        } */
+    }
+
 
     void OnTriggerExit(Collider other)
     {
@@ -258,7 +273,7 @@ public class Spaceship : MonoBehaviour
         }
     }
 
-    void triggerExplosion()
+    public void triggerExplosion()
     {
         canMove = false;
         rigidbody.velocity = new Vector3(0, 0, 0);
@@ -271,6 +286,8 @@ public class Spaceship : MonoBehaviour
         {
             c.enabled = false;
         }
+
+        Invoke("respawn", 2f);
     }
 
     void respawn()

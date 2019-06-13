@@ -20,6 +20,7 @@ public class UIController : MonoBehaviour
     void Awake()
     {
         Messenger<int>.AddListener(GameEvent.MINUS_LIFE, minusLife);
+        Messenger.AddListener(GameEvent.MINUS_LIFE_BOTH, minusLifeBoth);
     }
 
     void Start()
@@ -51,6 +52,18 @@ public class UIController : MonoBehaviour
         }
     }
 
+    void minusLifeBoth()
+    {
+        lifesP1[lifeP1 - 1].SetActive(false);       // le restamos 1 porque empieza en 0
+        lifeP1--;
+        lifesP2[lifeP2 - 1].SetActive(false);
+        lifeP2--;
+
+        if (lifeP1 == lifeP2 && lifeP1 == 0) gameOver(3);
+        else if (lifeP1 == 0) gameOver(1);
+        else if (lifeP2 == 0) gameOver(2);
+    }
+
     void gameOver(int looser)
     {
         endGameTextBlackP1.enabled = true;
@@ -71,11 +84,19 @@ public class UIController : MonoBehaviour
             endGameTextWhiteP2.text = "You Lose!";
             endGameTextBlackP2.text = "You Lose!";
         }
+        else if (looser == 3) // both lose
+        {
+            endGameTextWhiteP1.text = "Draw!";
+            endGameTextBlackP1.text = "Draw!";
+            endGameTextWhiteP2.text = "Draw!";
+            endGameTextBlackP2.text = "Draw!";
+        }
         Messenger.Broadcast(GameEvent.GAME_OVER);
     }
 
     void OnDestroy()
     {
         Messenger<int>.RemoveListener(GameEvent.MINUS_LIFE, minusLife);
+        Messenger.RemoveListener(GameEvent.MINUS_LIFE_BOTH, minusLifeBoth);
     }
 }
