@@ -5339,7 +5339,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -53.9, y: -80.1}
+  m_AnchoredPosition: {x: -53.899994, y: -80.100006}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &1294382590 stripped
@@ -6991,7 +6991,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -54.899994, y: -87.7}
+  m_AnchoredPosition: {x: -54.899994, y: -87.69998}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1674495031
@@ -7329,7 +7329,7 @@ GameObject:
   - component: {fileID: 1748458340}
   - component: {fileID: 1748458339}
   m_Layer: 5
-  m_Name: Bar
+  m_Name: ShootBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7842,7 +7842,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -53.9, y: -87.9}
+  m_AnchoredPosition: {x: -53.899994, y: -87.899994}
   m_SizeDelta: {x: 10, y: 10}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1860049051
@@ -8341,7 +8341,7 @@ GameObject:
   - component: {fileID: 1988738289}
   - component: {fileID: 1988738288}
   m_Layer: 5
-  m_Name: Bar
+  m_Name: TurboBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9357,6 +9357,16 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 955929839}
+    - target: {fileID: 6701386651716182568, guid: bedab3cf1371b15469cf7503c2603eb7,
+        type: 3}
+      propertyPath: shootBar
+      value: 
+      objectReference: {fileID: 2061633479}
+    - target: {fileID: 6701386651716182568, guid: bedab3cf1371b15469cf7503c2603eb7,
+        type: 3}
+      propertyPath: turboBar
+      value: 
+      objectReference: {fileID: 532165914}
     - target: {fileID: 4816003309076517795, guid: bedab3cf1371b15469cf7503c2603eb7,
         type: 3}
       propertyPath: target
@@ -9636,6 +9646,16 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 1657822535}
+    - target: {fileID: 3851515212760623409, guid: 41d910dbb0e805348b0cf7ce922ffb7e,
+        type: 3}
+      propertyPath: shootBar
+      value: 
+      objectReference: {fileID: 1748458337}
+    - target: {fileID: 3851515212760623409, guid: 41d910dbb0e805348b0cf7ce922ffb7e,
+        type: 3}
+      propertyPath: turboBar
+      value: 
+      objectReference: {fileID: 1988738286}
     - target: {fileID: 3073335622708418746, guid: 41d910dbb0e805348b0cf7ce922ffb7e,
         type: 3}
       propertyPath: target

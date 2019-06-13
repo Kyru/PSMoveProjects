@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Spaceship : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class Spaceship : MonoBehaviour
     private Quaternion startRotation;
     private bool isGameOver;
     private string player;
+    private bool circleButtonDown;
+    private bool isReloading;
 
     // explosion
     [SerializeField] private GameObject explosion;
@@ -37,6 +40,10 @@ public class Spaceship : MonoBehaviour
     // canvas
     [SerializeField] private GameObject carefulMessage;
     [SerializeField] private GameObject canvas;
+    [SerializeField] private GameObject shootBar;
+    [SerializeField] private GameObject turboBar;
+    private float maxBar = 1f;
+
 
     void Awake()
     {
@@ -62,10 +69,15 @@ public class Spaceship : MonoBehaviour
 
         cockpit.SetActive(false);
         carefulMessage.SetActive(false);
-
         explosion.SetActive(false);
+
         if (playerNum == 1) player = "Player1";
         else if (playerNum == 2) player = "Player2";
+
+        shootBar.GetComponent<Image>().fillAmount = maxBar;
+        turboBar.GetComponent<Image>().fillAmount = maxBar;
+        circleButtonDown = false;
+        isReloading = false;
     }
 
     // Update is called once per frame
@@ -78,14 +90,25 @@ public class Spaceship : MonoBehaviour
                 move.ResetOrientation();
                 canMove = true;
             }
+
             if (move.GetButtonDown(PSMoveButton.Circle))
             {
-                //actualVelocity = turboVelocity;
+                circleButtonDown = true;
             }
-            if (move.GetButtonUp(PSMoveButton.Circle))
+
+            if (circleButtonDown)
             {
-                //actualVelocity = standardVelocity;
+                turboBar.GetComponent<Image>().fillAmount -= 0.2f;
+                actualVelocity = turboVelocity;
+                if (turboBar.GetComponent<Image>().fillAmount <= 0)
+                {
+                    actualVelocity = standardVelocity;
+                    circleButtonDown = false;
+                }
             }
+
+            turboBar.GetComponent<Image>().fillAmount += 0.01f;
+
             if (move.GetButtonDown(PSMoveButton.Cross))
             {
                 switch (activeCamera)
@@ -129,9 +152,23 @@ public class Spaceship : MonoBehaviour
 
             if (move.Trigger > 0)
             {
-                // Instantiate(Object original, Vector3 position, Quaternion rotation, Transform parent);
-                Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
-                Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
+                if (!isReloading)
+                {
+                    if (shootBar.GetComponent<Image>().fillAmount > 0)
+                    {
+                        shootBar.GetComponent<Image>().fillAmount -= 0.01f;
+                        Debug.Log("fill amount trigger " + shootBar.GetComponent<Image>().fillAmount);
+                        Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
+                        Instantiate(bullet, bulletSpawnerRight.transform.position, bulletSpawnerRight.transform.rotation);
+                    }
+                }
+            }
+
+            Debug.Log("fill amount update " + shootBar.GetComponent<Image>().fillAmount);
+
+            if (shootBar.GetComponent<Image>().fillAmount <= 0 && !isReloading)
+            {
+                StartCoroutine("reloadBar");
             }
 
             if (canMove)
@@ -160,6 +197,14 @@ public class Spaceship : MonoBehaviour
         }
     }
 
+    IEnumerator reloadBar()
+    {
+        isReloading = true;
+        yield return new WaitForSeconds(3f);
+        shootBar.GetComponent<Image>().fillAmount = maxBar;
+        isReloading = false;
+    }
+
     public UniMoveController Move
     {
         get { return move; }
@@ -186,7 +231,6 @@ public class Spaceship : MonoBehaviour
         }
         else if (other.gameObject.tag == "BulletP1")
         {
-            Debug.Log("entro en BulletP1 y soy = " + this.gameObject.name);
             if (this.gameObject.name != "Player1")
             {
                 Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
@@ -196,7 +240,6 @@ public class Spaceship : MonoBehaviour
         }
         else if (other.gameObject.tag == "BulletP2")
         {
-            Debug.Log("entro en BulletP2 y soy = " + this.gameObject.name);
             if (this.gameObject.name != "Player2")
             {
                 Messenger<int>.Broadcast(GameEvent.MINUS_LIFE, playerNum);
