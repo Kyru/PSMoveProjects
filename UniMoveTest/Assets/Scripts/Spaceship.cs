@@ -79,11 +79,11 @@ public class Spaceship : MonoBehaviour
             }
             if (move.GetButtonDown(PSMoveButton.Circle))
             {
-                actualVelocity = turboVelocity;
+                //actualVelocity = turboVelocity;
             }
             if (move.GetButtonUp(PSMoveButton.Circle))
             {
-                actualVelocity = standardVelocity;
+                //actualVelocity = standardVelocity;
             }
             if (move.GetButtonDown(PSMoveButton.Cross))
             {
