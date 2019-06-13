@@ -165,8 +165,6 @@ public class Spaceship : MonoBehaviour
                 }
             }
 
-            Debug.Log("fill amount update " + shootBar.GetComponent<Image>().fillAmount);
-
             if (shootBar.GetComponent<Image>().fillAmount <= 0 && !isReloading)
             {
                 StartCoroutine("reloadBar");
@@ -303,6 +301,9 @@ public class Spaceship : MonoBehaviour
 
         transform.position = startPosition;
         transform.rotation = startRotation;
+
+        shootBar.GetComponent<Image>().fillAmount = maxBar;
+        turboBar.GetComponent<Image>().fillAmount = maxBar;
 
         canMove = false;
     }
