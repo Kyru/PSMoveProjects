@@ -56,6 +56,7 @@ public class Spaceship : MonoBehaviour
         topCamera.enabled = false;
         farCamera.enabled = false;
         outsideCamera.enabled = true;
+        canvas.GetComponent<Canvas>().worldCamera = outsideCamera;
 
         activeCamera = 0;
 
