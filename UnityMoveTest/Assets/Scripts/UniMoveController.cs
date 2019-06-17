@@ -206,6 +206,9 @@ public class UniMoveController : MonoBehaviour
     // <F> Variable para especificar la posición de la cámara para los cálculos necesarios en ProcessData()
     private string cameraPosition;
 
+    // <F> ProcessData() limiter
+    private int processDataLimiter = 0;
+
     /// <summary>
     /// Event fired when the controller disconnects unexpectedly (i.e. on going out of range).
     /// </summary>
@@ -304,15 +307,15 @@ public class UniMoveController : MonoBehaviour
         // we only get one button event pr. unity update frame
         prevButtons = currentButtons;
 
-        //timeElapsed += Time.deltaTime;
+        timeElapsed += Time.deltaTime;      // <F> Esto estaba comentado antes
 
 
         // Here we manually enforce updates only every updateRate amount of time
         // The reason we don't just do this in FixedUpdate is so the main program's FixedUpdate rate 
         // can be set independently of the controllers' update rate.
 
-        /*if (timeElapsed < updateRate) return;	
-		else timeElapsed = 0.0f;*/
+        if (timeElapsed < updateRate) return;       // <F> Esto estaba conectado antes
+        else timeElapsed = 0.0f;                    // <F> Esto estaba conectado antes
 
         uint buttons = 0;
 
@@ -328,12 +331,22 @@ public class UniMoveController : MonoBehaviour
         }
         currentButtons = buttons;
 
-        psmove_tracker_update_image(tracker);
-        psmove_tracker_update(tracker, handle);
+        // <F> Test limiting the times it obtains the position of the Move
+        //if (processDataLimiter % 2 == 0)
+        //{
+            psmove_tracker_update_image(tracker);
+            psmove_tracker_update(tracker, handle);
 
-        // For acceleration, gyroscope, and magnetometer values, we look at only the last value in the queue.
-        // We could in theory average all the acceleration (and other) values in the queue for a "smoothing" effect, but we've chosen not to.
+            // For acceleration, gyroscope, and magnetometer values, we look at only the last value in the queue.
+            // We could in theory average all the acceleration (and other) values in the queue for a "smoothing" effect, but we've chosen not to.
+            // ProcessData();
+        //}
+
+        //psmove_tracker_update_image(tracker);
+        //psmove_tracker_update(tracker, handle);
+
         ProcessData();
+
 
         // Send a report to the controller to update the LEDs and rumble.
         if (psmove_update_leds(handle) == 0)
@@ -343,6 +356,8 @@ public class UniMoveController : MonoBehaviour
             OnControllerDisconnected(this, new EventArgs());
             Disconnect();
         }
+
+        processDataLimiter++;
     }
 
     void OnApplicationQuit()
@@ -601,11 +616,14 @@ public class UniMoveController : MonoBehaviour
             if (cameraPosition == "Front")
             {
                 // <F> Estos valores se utilizan cuando se quiere ver el mando desde frente
-                psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
+                //if (processDataLimiter % 2 == 0)
+                //{
+                    psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
 
-                position.x = px * 5;
-                position.y = -py * 5;
-                position.z = (-pz * 5);
+                    position.x = px * 5;
+                    position.y = -py * 5;
+                    position.z = (-pz * 5);
+                //}
 
                 float rw = 0, rx = 0, ry = 0, rz = 0;
                 psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);
