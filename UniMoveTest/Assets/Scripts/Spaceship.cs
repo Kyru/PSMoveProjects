@@ -171,6 +171,7 @@ public class Spaceship : MonoBehaviour
                                 audioSource.GetComponent<AudioController>().SetLoop(true);
                                 audioSource.GetComponent<AudioController>().PlayAudioClip(1); // play laser sound
                                 isPlayingSound = true;
+                                move.SetRumble(1f);
                             }
                             shootBar.GetComponent<Image>().fillAmount -= 0.01f;
                             Instantiate(bullet, bulletSpawnerLeft.transform.position, bulletSpawnerLeft.transform.rotation);
@@ -181,12 +182,14 @@ public class Spaceship : MonoBehaviour
                     {
                         audioSource.GetComponent<AudioController>().SetLoop(false);
                         isPlayingSound = false;
+                        move.SetRumble(0f);
                     }
                 }
                 else
                 {
                     audioSource.GetComponent<AudioController>().SetLoop(false);
                     isPlayingSound = false;
+                    move.SetRumble(0f);
                 }
 
                 if (shootBar.GetComponent<Image>().fillAmount <= 0 && !isReloading)
@@ -310,6 +313,8 @@ public class Spaceship : MonoBehaviour
             c.enabled = false;
         }
 
+        move.SetRumble(1f);
+
         Invoke("respawn", 2f);
     }
 
@@ -329,6 +334,8 @@ public class Spaceship : MonoBehaviour
 
         shootBar.GetComponent<Image>().fillAmount = maxBar;
         turboBar.GetComponent<Image>().fillAmount = maxBar;
+
+        move.SetRumble(0f);
 
         canMove = false;
     }

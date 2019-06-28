@@ -332,7 +332,7 @@ public class UniMoveController : MonoBehaviour
         currentButtons = buttons;
 
         // <F> Test limiting the times it obtains the position of the Move
-        //if (processDataLimiter % 2 == 0)
+        //if (processDataLimiter % 5 == 0)
         //{
             psmove_tracker_update_image(tracker);
             psmove_tracker_update(tracker, handle);
