@@ -9,5 +9,4 @@ Compilation of 4 prototypes developed in Unity for using PSMove outside of its n
 ## Attribution and Thanks
 
 + Thomas Perl and his [psmoveapi](https://github.com/thp/psmoveapi) project.
-
-- The Copenhagen Game Collective and their project [UniMove](https://github.com/CopenhagenGameCollective/UniMove).
++ The Copenhagen Game Collective and their project [UniMove](https://github.com/CopenhagenGameCollective/UniMove).
