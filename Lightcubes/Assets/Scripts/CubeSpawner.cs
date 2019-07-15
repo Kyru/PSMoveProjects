@@ -6,7 +6,6 @@ public class CubeSpawner : MonoBehaviour
 {
     [SerializeField] private GameObject cube;
     [SerializeField] private List<Vector3> positions;
-    [SerializeField] private List<Vector3> rotations;
     private bool spawnNext;
     private bool gameStarted;
 

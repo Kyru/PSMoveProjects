@@ -331,15 +331,11 @@ public class UniMoveController : MonoBehaviour
         }
         currentButtons = buttons;
 
-        // <F> Test limiting the times it obtains the position of the Move
-        //if (processDataLimiter % 5 == 0)
+        // <F> Test to limit the frames and improve performance, if statemente should be active in 2 players.
+        //if (processDataLimiter % 2 == 0)
         //{
             psmove_tracker_update_image(tracker);
             psmove_tracker_update(tracker, handle);
-
-            // For acceleration, gyroscope, and magnetometer values, we look at only the last value in the queue.
-            // We could in theory average all the acceleration (and other) values in the queue for a "smoothing" effect, but we've chosen not to.
-            // ProcessData();
         //}
 
         //psmove_tracker_update_image(tracker);
@@ -438,7 +434,6 @@ public class UniMoveController : MonoBehaviour
         if (disconnected) return;
 
         psmove_set_leds(handle, (char)(color.r * 255), (char)(color.g * 255), (char)(color.b * 255));
-        // <F> Según la API hay que llamar a este método después de hacer psmove_set_leds
         psmove_update_leds(handle);
     }
 
@@ -615,15 +610,11 @@ public class UniMoveController : MonoBehaviour
         {
             if (cameraPosition == "Front")
             {
-                // <F> Estos valores se utilizan cuando se quiere ver el mando desde frente
-                //if (processDataLimiter % 2 == 0)
-                //{
-                    psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
+                psmove_fusion_get_position(fusion, handle, ref px, ref py, ref pz);
 
-                    position.x = px * 5;
-                    position.y = -py * 5;
-                    position.z = (-pz * 5);
-                //}
+                position.x = px * 5;
+                position.y = -py * 5;
+                position.z = (-pz * 5);
 
                 float rw = 0, rx = 0, ry = 0, rz = 0;
                 psmove_get_orientation(handle, ref rw, ref rx, ref ry, ref rz);

@@ -411,6 +411,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 203240924}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &278921055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 278921056}
+  m_Layer: 0
+  m_Name: CameraParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &278921056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 278921055}
+  m_LocalRotation: {x: -0, y: 0.99858534, z: -0.053172894, w: 0}
+  m_LocalPosition: {x: 0, y: 25, z: 191}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 484753531}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &278988720
 GameObject:
   m_ObjectHideFlags: 0
@@ -593,6 +624,7 @@ GameObject:
   - component: {fileID: 484753530}
   - component: {fileID: 484753529}
   - component: {fileID: 484753532}
+  - component: {fileID: 484753533}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -657,11 +689,11 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 484753528}
-  m_LocalRotation: {x: -0, y: 0.99858534, z: -0.053172894, w: 0}
-  m_LocalPosition: {x: 0, y: 25, z: 191}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 278921056}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 6.096, y: 180.00002, z: 0}
 --- !u!114 &484753532
@@ -677,6 +709,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   profile: {fileID: 11400000, guid: f41b775b152738d4b9eb230934e242fa, type: 2}
+--- !u!114 &484753533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 484753528}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b51c0e17ca79193499395d5123230b1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &520896909
 GameObject:
   m_ObjectHideFlags: 0
@@ -843,8 +887,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 8638847325729425377, guid: de9c77fb5845d904d9aa25f23c8abbed, type: 3}
-  positions: []
-  rotations: []
+  positions:
+  - {x: -10, y: -9, z: -675}
+  - {x: 14, y: -9, z: -675}
+  - {x: 7, y: 5, z: -675}
+  - {x: 7, y: -22, z: -675}
 --- !u!4 &634917669
 Transform:
   m_ObjectHideFlags: 0
@@ -1918,8 +1965,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cube: {fileID: 8638847325729425377, guid: de9c77fb5845d904d9aa25f23c8abbed, type: 3}
-  positions: []
-  rotations: []
+  positions:
+  - {x: -20, y: -9, z: -675}
+  - {x: 4, y: -9, z: -675}
+  - {x: -3, y: 5, z: -675}
+  - {x: -3, y: -22, z: -675}
 --- !u!1001 &1800656949
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2157,6 +2207,11 @@ PrefabInstance:
       propertyPath: audioControl
       value: 
       objectReference: {fileID: 1055244844}
+    - target: {fileID: 1553864934960385518, guid: 44097628dc6ef034887fdd1a4d2b82ab,
+        type: 3}
+      propertyPath: cameraShake
+      value: 
+      objectReference: {fileID: 484753533}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44097628dc6ef034887fdd1a4d2b82ab, type: 3}
 --- !u!1001 &4755570936158944915
@@ -2231,5 +2286,10 @@ PrefabInstance:
       propertyPath: audioControl
       value: 
       objectReference: {fileID: 1055244844}
+    - target: {fileID: 4755570936700089719, guid: 914512c55dc6e124f99daa49392462da,
+        type: 3}
+      propertyPath: cameraShake
+      value: 
+      objectReference: {fileID: 484753533}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 914512c55dc6e124f99daa49392462da, type: 3}
